@@ -16,12 +16,12 @@ class LaravelQuizServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-quiz');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-quiz');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-quiz.php'),
+                __DIR__ . '/../config/config.php' => config_path('laravel-quiz.php'),
             ], 'config');
 
             // Publishing the views.
@@ -50,7 +50,7 @@ class LaravelQuizServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-quiz');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-quiz');
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-quiz', function () {
