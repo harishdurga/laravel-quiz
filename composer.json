@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Harishdurga\\LaravelQuiz\\": "src"
+            "Harishdurga\\LaravelQuiz\\": "src",
+            "Harishdurga\\LaravelQuiz\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
