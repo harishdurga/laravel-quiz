@@ -1,0 +1,54 @@
+{
+    "name": "harishdurga/laravel-quiz",
+    "description": "Provides Quiz Functionality",
+    "keywords": [
+        "harishdurga",
+        "laravel-quiz"
+    ],
+    "homepage": "https://github.com/harishdurga/laravel-quiz",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Harish Durga",
+            "email": "durgaharish5@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Harishdurga\\LaravelQuiz\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Harishdurga\\LaravelQuiz\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Harishdurga\\LaravelQuiz\\LaravelQuizServiceProvider"
+            ],
+            "aliases": {
+                "LaravelQuiz": "Harishdurga\\LaravelQuiz\\LaravelQuizFacade"
+            }
+        }
+    }
+}
