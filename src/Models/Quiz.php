@@ -20,4 +20,9 @@ class Quiz extends Model
     {
         return config('laravel-quiz.table_names.quizzes', parent::getTable());
     }
+
+    public function questions()
+    {
+        return $this->hasMany(QuizQuestion::class, 'quiz_id');
+    }
 }

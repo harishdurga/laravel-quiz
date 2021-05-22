@@ -19,11 +19,11 @@ class CreateQuizQuestionsTable extends Migration
             $table->text('question')->nullable();
             $table->float('points')->default(0);
             $table->string('type', 100)->nullable();
-            $table->unsignedBigInteger('quizz_id');
+            $table->unsignedBigInteger('quiz_id');
             $table->timestamps();
         });
         Schema::table($tableNames['quiz_questions'], function (Blueprint $table) use ($tableNames) {
-            $table->foreign('quizz_id')->references('id')->on($tableNames['quizzes']);
+            $table->foreign('quiz_id')->references('id')->on($tableNames['quizzes']);
         });
     }
 

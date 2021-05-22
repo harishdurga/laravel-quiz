@@ -3,6 +3,7 @@
 namespace Harishdurga\LaravelQuiz\Tests\Unit;
 
 use Harishdurga\LaravelQuiz\Models\Quiz;
+use Harishdurga\LaravelQuiz\Models\QuizQuestion;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -22,5 +23,13 @@ class QuizTest extends TestCase
             'is_published' => 1
         ]);
         $this->assertEquals('test123', $quiz->code);
+    }
+
+    /** @test */
+    function a_quiz_has_questions()
+    {
+        $quiz = Quiz::factory()->create(['code' => 'test123']);
+        QuizQuestion::factory()->count(10)->create(['quiz_id' => $quiz->id]);
+        $this->assertEquals(10, $quiz->questions->count());
     }
 }
