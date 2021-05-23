@@ -25,4 +25,9 @@ class Quiz extends Model
     {
         return $this->hasMany(QuizQuestion::class, 'quiz_id');
     }
+
+    public function quiz_topics()
+    {
+        return $this->belongsToMany(QuizTopic::class, config('laravel-quiz.table_names.quiz_topic_quiz'), 'quiz_topic_id', 'quiz_id');
+    }
 }
