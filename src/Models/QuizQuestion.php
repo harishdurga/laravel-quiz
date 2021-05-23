@@ -25,4 +25,9 @@ class QuizQuestion extends Model
     {
         return \Harishdurga\LaravelQuiz\Database\Factories\QuizQuestionFactory::new();
     }
+
+    public function options()
+    {
+        return $this->hasMany(QuizQuestionOption::class, 'quiz_question_id');
+    }
 }
