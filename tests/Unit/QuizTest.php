@@ -3,9 +3,10 @@
 namespace Harishdurga\LaravelQuiz\Tests\Unit;
 
 use Harishdurga\LaravelQuiz\Models\Quiz;
-use Harishdurga\LaravelQuiz\Models\QuizQuestion;
-use Harishdurga\LaravelQuiz\Models\QuizTopic;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
+use Harishdurga\LaravelQuiz\Models\QuizTopic;
+use Harishdurga\LaravelQuiz\LaravelQuizFacade;
+use Harishdurga\LaravelQuiz\Models\QuizQuestion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class QuizTest extends TestCase
@@ -41,5 +42,11 @@ class QuizTest extends TestCase
         $quizTopics = QuizTopic::factory()->count(3)->create()->pluck('id');
         $quiz->quiz_topics()->attach($quizTopics);
         $this->assertEquals(3, $quiz->quiz_topics->count());
+    }
+
+    /** @test */
+    function facade_test()
+    {
+        $this->assertEquals('test', LaravelQuizFacade::testFacade());
     }
 }

@@ -4,5 +4,8 @@ namespace Harishdurga\LaravelQuiz;
 
 class LaravelQuiz
 {
-    // Build your next great package.
+    public function testFacade()
+    {
+        return 'test';
+    }
 }
