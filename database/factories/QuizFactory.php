@@ -17,7 +17,9 @@ class QuizFactory extends Factory
             'code' => $this->faker->unique()->text,
             'points_to_pass' => $this->faker->numberBetween(10, 100),
             'additional_data' => json_encode(['first_name' => 'hello', 'last_name' => 'world']),
-            'is_published' => $this->faker->numberBetween(0, 1)
+            'is_published' => $this->faker->numberBetween(0, 1),
+            'author_id' => null,
+            'author_type' => null
         ];
     }
 }

@@ -43,10 +43,4 @@ class QuizTest extends TestCase
         $quiz->quiz_topics()->attach($quizTopics);
         $this->assertEquals(3, $quiz->quiz_topics->count());
     }
-
-    /** @test */
-    function facade_test()
-    {
-        $this->assertEquals('test', LaravelQuizFacade::testFacade());
-    }
 }
