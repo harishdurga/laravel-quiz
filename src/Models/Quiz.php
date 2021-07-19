@@ -30,4 +30,12 @@ class Quiz extends Model
     {
         return $this->belongsToMany(QuizTopic::class, config('laravel-quiz.table_names.quiz_topic_quiz'), 'quiz_topic_id', 'quiz_id');
     }
+
+    /**
+     * Get the parent model that this quiz belongs to.
+     */
+    public function author()
+    {
+        return $this->morphTo(__FUNCTION__, 'author_type', 'author_id');
+    }
 }

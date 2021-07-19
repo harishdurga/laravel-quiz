@@ -2,9 +2,9 @@
 
 namespace Harishdurga\LaravelQuiz\Tests\Feature;
 
-use Harishdurga\LaravelQuiz\LaravelQuizFacade;
-use Harishdurga\LaravelQuiz\Models\Quiz;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
+use Harishdurga\LaravelQuiz\LaravelQuizFacade;
+use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateQuizTest extends TestCase
@@ -14,7 +14,7 @@ class CreateQuizTest extends TestCase
     /** @test */
     function create_quiz()
     {
-        $model = Quiz::factory()->make();
+        $author = Author::create(['name' => 'John Doe']);
         $quiz = LaravelQuizFacade::createQuiz(
             title: 'Test Quiz',
             code: 'test-quiz',
@@ -22,9 +22,9 @@ class CreateQuizTest extends TestCase
             description: 'this is a test quiz',
             pointsToPass: 50,
             additionalData: ['total_marks' => 100, 'duration_in_minutes' => 120],
-            authorId: 1,
-            authorType: $model
+            authorId: $author->id,
+            authorType: $author
         );
-        $this->assertEquals(get_class($model), $quiz->author_type);
+        $this->assertEquals(get_class($author), get_class($quiz->author));
     }
 }
