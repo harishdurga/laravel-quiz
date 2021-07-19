@@ -2,14 +2,13 @@
 
 namespace Harishdurga\LaravelQuiz;
 
-use Harishdurga\LaravelQuiz\Models\Quiz;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Harishdurga\LaravelQuiz\Models\Quiz;
+use Harishdurga\LaravelQuiz\Models\QuizTopic;
 
 class LaravelQuiz
 {
-    /**
-     * @return 
-     */
     public function createQuiz(
         string $title,
         string $code,
@@ -30,6 +29,32 @@ class LaravelQuiz
             'author_id' => $authorId,
             'author_type' => is_object($authorType) ? get_class($authorType) : null
         ];
-        return Quiz::factory()->create($data);
+        return Quiz::create($data);
+    }
+
+    /**
+     * Get Quiz with it's unique code
+     */
+    public function getQuiz(string $code): ?Quiz
+    {
+        return Quiz::where('code', $code)->first();
+    }
+
+    public function createQuizTopic(string $topic, ?string $slug = null, ?int $parentId = null, bool $isActive = true): QuizTopic
+    {
+        return QuizTopic::create([
+            'topic' => $topic,
+            'slug' => $slug ?? Str::slug($topic, '-'),
+            'parent_id' => $parentId,
+            'is_active' => $isActive
+        ]);
+    }
+
+    /**
+     * Get QuizTopic with it's slug
+     */
+    public function getQuizTopic(string $slug): ?QuizTopic
+    {
+        return QuizTopic::where('slug', $slug)->first();
     }
 }
