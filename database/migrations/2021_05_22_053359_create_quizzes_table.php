@@ -98,6 +98,17 @@ class CreateQuizzesTable extends Migration
             $table->timestamps();
             $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
             $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
+            $table->unique(['quiz_id', 'question_id']);
+        });
+
+        //Quiz Attempts Table
+        Schema::create($this->tableNames['quiz_attempts'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('quiz_id');
+            $table->unsignedBigInteger('participant_id');
+            $table->string('participant_type');
+            $table->timestamps();
+            $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
         });
     }
 
@@ -124,6 +135,10 @@ class CreateQuizzesTable extends Migration
             $table->dropForeign(['quiz_id']);
             $table->dropForeign(['question_id']);
         });
+        Schema::table($this->tableNames['quiz_attempts'], function (Blueprint $table) {
+            $table->dropForeign(['quiz_id']);
+        });
+        Schema::drop($this->tableNames['quiz_attempts']);
         Schema::drop($this->tableNames['quiz_questions']);
         Schema::drop($this->tableNames['topicables']);
         Schema::drop($this->tableNames['question_options']);
