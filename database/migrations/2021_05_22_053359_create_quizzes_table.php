@@ -87,6 +87,18 @@ class CreateQuizzesTable extends Migration
             $table->timestamp('valid_upto')->nullable(); //null means no expiry
             $table->timestamps();
         });
+
+        //Quiz Questions Table
+        Schema::create($this->tableNames['quiz_questions'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('quiz_id');
+            $table->unsignedBigInteger('question_id');
+            $table->float('marks')->default(0); //0 means no marks
+            $table->boolean('is_optional')->default(false); //0 means not optional, 1 means optional
+            $table->timestamps();
+            $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
+        });
     }
 
     /**
@@ -108,6 +120,11 @@ class CreateQuizzesTable extends Migration
         Schema::table($this->tableNames['question_options'], function (Blueprint $table) {
             $table->dropForeign(['question_id']);
         });
+        Schema::table($this->tableNames['quiz_questions'], function (Blueprint $table) {
+            $table->dropForeign(['quiz_id']);
+            $table->dropForeign(['question_id']);
+        });
+        Schema::drop($this->tableNames['quiz_questions']);
         Schema::drop($this->tableNames['topicables']);
         Schema::drop($this->tableNames['question_options']);
         Schema::drop($this->tableNames['questions']);

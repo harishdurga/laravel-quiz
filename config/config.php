@@ -11,6 +11,7 @@ return [
         'topicables' => 'topicables',
         'question_options' => 'question_options',
         'quizzes' => 'quizzes',
+        'quiz_questions' => 'quiz_questions'
     ],
 
 ];

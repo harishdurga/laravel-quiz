@@ -32,4 +32,9 @@ class Question extends Model
     {
         return $this->hasMany(QuestionOption::class);
     }
+
+    public function quiz_questions()
+    {
+        return $this->hasMany(QuizQuestion::class);
+    }
 }
