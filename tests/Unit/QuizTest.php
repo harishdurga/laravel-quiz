@@ -12,7 +12,6 @@ use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Harishdurga\LaravelQuiz\Models\QuizAttemptAnswer;
-use Harishdurga\LaravelQuiz\Database\Factories\QuestionOptionFactory;
 
 class QuizTest extends TestCase
 {
