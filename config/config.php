@@ -6,11 +6,12 @@
 return [
     'table_names' => [
         'quizzes' => 'quizzes',
-        'quiz_questions' => 'quiz_questions',
+        'questions' => 'questions',
         'quiz_question_options' => 'quiz_question_options',
-        'quiz_topics' => 'quiz_topics',
+        'topics' => 'topics',
         'quiz_topic_quiz' => 'quiz_topic_quiz',
-        'quiz_attempts' => 'quiz_attempts'
+        'quiz_attempts' => 'quiz_attempts',
+        'question_types' => 'question_types'
     ],
 
 ];

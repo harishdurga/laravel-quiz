@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateQuizzesTable extends Migration
 {
+    public function __construct(public $tableNames)
+    {
+        $this->tableNames = config('laravel-quiz.table_names');
+    }
     /**
      * Run the migrations.
      *
@@ -13,19 +17,13 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
-        $tableNames = config('laravel-quiz.table_names');
-        Schema::create($tableNames['quizzes'], function (Blueprint $table) {
-            $table->id();
-            $table->string('title'); //title for the quiz
-            $table->text('description')->nullable(); //description about the quiz
-            $table->string('code')->unique(); //unique alpha numeric code to identify the quiz
-            $table->float('points_to_pass')->default(0); //number of points needed to pass this quiz
-            $table->json('additional_data')->nullable(); //Any other additional data about the quiz in key value format
-            $table->unsignedBigInteger('author_id')->nullable(); //Author model id
-            $table->string('author_type')->nullable(); //Author model type
-            $table->tinyInteger('is_published')->default(0); //Quiz is published if 1, unblished 0
-            $table->unsignedInteger('no_of_attempts')->default(0); //Number of times the quiz can be attempted. 0 = unlimited attempts
+        Schema::create($this->tableNames['topics'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('topic');
+            $table->string('slug')->unique();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
+            $table->foreign('parent_id')->references('id')->on($this->tableNames['topics']);
         });
     }
 
@@ -36,7 +34,6 @@ class CreateQuizzesTable extends Migration
      */
     public function down()
     {
-        $tableNames = config('laravel-quiz.table_names');
-        Schema::dropIfExists($tableNames['quizzes']);
+        Schema::drop($this->tableNames['topics']);
     }
 }
