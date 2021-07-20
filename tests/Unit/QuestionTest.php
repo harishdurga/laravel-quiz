@@ -5,6 +5,7 @@ namespace Harishdurga\LaravelQuiz\Tests\Unit;
 use Harishdurga\LaravelQuiz\Models\Topic;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
 use Harishdurga\LaravelQuiz\Models\Question;
+use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Harishdurga\LaravelQuiz\Models\QuestionType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -41,5 +42,20 @@ class QuestionTest extends TestCase
         $question->topics()->attach($topic1);
         $question->topics()->attach($topic2);
         $this->assertEquals(2, $question->topics->count());
+    }
+
+    /** @test */
+    function question_and_question_options_relation()
+    {
+        $question = Question::factory()->create();
+        $question->options()->saveMany([
+            QuestionOption::factory()->make([
+                'question_id' => $question->id,
+            ]),
+            QuestionOption::factory()->make([
+                'question_id' => $question->id,
+            ]),
+        ]);
+        $this->assertEquals(2, $question->options->count());
     }
 }

@@ -27,4 +27,9 @@ class Question extends Model
     {
         return $this->morphToMany(Topic::class, 'topicable');
     }
+
+    public function options()
+    {
+        return $this->hasMany(QuestionOption::class);
+    }
 }
