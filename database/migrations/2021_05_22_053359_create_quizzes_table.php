@@ -18,6 +18,7 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
+        \DB::beginTransaction();
         //Topics Table
         Schema::create($this->tableNames['topics'], function (Blueprint $table) {
             $table->increments('id');
@@ -123,6 +124,8 @@ class CreateQuizzesTable extends Migration
             $table->foreign('quiz_question_id')->references('id')->on($this->tableNames['quiz_questions'])->onDelete('cascade');
             $table->foreign('question_option_id')->references('id')->on($this->tableNames['question_options'])->onDelete('cascade');
         });
+
+        \DB::commit();
     }
 
     /**
