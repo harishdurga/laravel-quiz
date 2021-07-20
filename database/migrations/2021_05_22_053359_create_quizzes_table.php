@@ -110,6 +110,19 @@ class CreateQuizzesTable extends Migration
             $table->timestamps();
             $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
         });
+
+        //Quiz Attempt Answers Table
+        Schema::create($this->tableNames['quiz_attempt_answers'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('quiz_attempt_id');
+            $table->unsignedBigInteger('quiz_question_id');
+            $table->unsignedBigInteger('question_option_id');
+            $table->string('answer')->nullable();
+            $table->timestamps();
+            $table->foreign('quiz_attempt_id')->references('id')->on($this->tableNames['quiz_attempts'])->onDelete('cascade');
+            $table->foreign('quiz_question_id')->references('id')->on($this->tableNames['quiz_questions'])->onDelete('cascade');
+            $table->foreign('question_option_id')->references('id')->on($this->tableNames['question_options'])->onDelete('cascade');
+        });
     }
 
     /**
@@ -138,6 +151,12 @@ class CreateQuizzesTable extends Migration
         Schema::table($this->tableNames['quiz_attempts'], function (Blueprint $table) {
             $table->dropForeign(['quiz_id']);
         });
+        Schema::table($this->tableNames['quiz_attempt_answers'], function (Blueprint $table) {
+            $table->dropForeign(['quiz_attempt_id']);
+            $table->dropForeign(['quiz_question_id']);
+            $table->dropForeign(['question_option_id']);
+        });
+        Schema::drop($this->tableNames['quiz_attempt_answers']);
         Schema::drop($this->tableNames['quiz_attempts']);
         Schema::drop($this->tableNames['quiz_questions']);
         Schema::drop($this->tableNames['topicables']);

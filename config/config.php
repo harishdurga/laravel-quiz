@@ -12,7 +12,8 @@ return [
         'question_options' => 'question_options',
         'quizzes' => 'quizzes',
         'quiz_questions' => 'quiz_questions',
-        'quiz_attempts' => 'quiz_attempts'
+        'quiz_attempts' => 'quiz_attempts',
+        'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
 
 ];

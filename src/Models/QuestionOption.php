@@ -24,4 +24,9 @@ class QuestionOption extends Model
     {
         return \Harishdurga\LaravelQuiz\Database\Factories\QuestionOptionFactory::new();
     }
+
+    public function answers()
+    {
+        return $this->hasMany(QuizAttemptAnswer::class);
+    }
 }

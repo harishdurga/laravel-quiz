@@ -24,4 +24,9 @@ class QuizAttempt extends Model
     {
         return $this->morphTo(__FUNCTION__, 'participant_type', 'participant_id');
     }
+
+    public function answers()
+    {
+        return $this->hasMany(QuizAttemptAnswer::class);
+    }
 }
