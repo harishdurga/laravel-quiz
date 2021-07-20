@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateQuizzesTable extends Migration
 {
-    public function __construct(public $tableNames)
+    public array $tableNames;
+    public function __construct()
     {
         $this->tableNames = config('laravel-quiz.table_names');
     }
@@ -17,13 +18,22 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
+        //Topics Table
         Schema::create($this->tableNames['topics'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('topic');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on($this->tableNames['topics']);
+            $table->foreign('parent_id')->references('id')->on($this->tableNames['topics'])->onDelete('cascade');
+        });
+
+        //Question Types Table
+        Schema::create($this->tableNames['question_types'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('question_type');
+            $table->timestamps();
         });
     }
 
@@ -34,6 +44,10 @@ class CreateQuizzesTable extends Migration
      */
     public function down()
     {
+        Schema::table($this->tableNames['topics'], function (Blueprint $table) {
+            $table->dropForeign(['parent_id']);
+        });
         Schema::drop($this->tableNames['topics']);
+        Schema::drop($this->tableNames['question_types']);
     }
 }
