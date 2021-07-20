@@ -47,6 +47,16 @@ class CreateQuizzesTable extends Migration
             $table->timestamps();
             $table->foreign('question_type_id')->references('id')->on($this->tableNames['question_types'])->onDelete('cascade');
         });
+
+        //Quiz, Questions and Topics Relations Table
+        Schema::create($this->tableNames['topicables'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('topic_id');
+            $table->unsignedBigInteger('topicable_id');
+            $table->string('topicable_type');
+            $table->timestamps();
+            $table->foreign('topic_id')->references('id')->on($this->tableNames['topics'])->onDelete('cascade');
+        });
     }
 
     /**
@@ -59,11 +69,15 @@ class CreateQuizzesTable extends Migration
         Schema::table($this->tableNames['topics'], function (Blueprint $table) {
             $table->dropForeign(['parent_id']);
         });
-        Schema::drop($this->tableNames['topics']);
-        Schema::table($this->tableNames['questions'], function (Blueprint $table) {
+        Schema::table($this->tableNames['quiz_question_topics'], function (Blueprint $table) {
+            $table->dropForeign(['topic_id']);
+        });
+        Schema::table($this->tableNames['topicables'], function (Blueprint $table) {
             $table->dropForeign(['question_type_id']);
         });
+        Schema::drop($this->tableNames['topicables']);
         Schema::drop($this->tableNames['questions']);
+        Schema::drop($this->tableNames['topics']);
         Schema::drop($this->tableNames['question_types']);
     }
 }

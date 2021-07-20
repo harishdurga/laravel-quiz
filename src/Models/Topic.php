@@ -31,8 +31,8 @@ class Topic extends Model
         return $this->belongsTo(Topic::class, 'parent_id', 'id');
     }
 
-    // public function quizzes()
-    // {
-    //     return $this->belongsToMany(Quiz::class, config('laravel-quiz.table_names.quiz_topic_quiz'), 'quiz_id', 'quiz_topic_id');
-    // }
+    public function questions()
+    {
+        return $this->morphedByMany(Question::class, 'topicable');
+    }
 }

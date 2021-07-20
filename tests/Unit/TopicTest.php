@@ -4,6 +4,7 @@ namespace Harishdurga\LaravelQuiz\Tests\Unit;
 
 use Harishdurga\LaravelQuiz\Models\Topic;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
+use Harishdurga\LaravelQuiz\Models\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TopicTest extends TestCase
@@ -30,5 +31,25 @@ class TopicTest extends TestCase
             Topic::factory()->make(['topic' => 'Child Topic 2']),
         ]);
         $this->assertEquals(2, $parentTopic->children()->count());
+    }
+
+    /** @test */
+    function topic_question_relation()
+    {
+        $topic = Topic::factory()->create([
+            'topic' => 'Test Topic',
+        ]);
+        $question1 = Question::factory()->create([
+            'question' => 'Test Question',
+        ]);
+        $question2 = Question::factory()->create([
+            'question' => 'Test Question',
+        ]);
+        $question3 = Question::factory()->create([
+            'question' => 'Test Question',
+        ]);
+        $topic->questions()->attach($question1);
+        $topic->questions()->attach([$question2->id, $question3->id]);
+        $this->assertEquals(3, $topic->questions()->count());
     }
 }

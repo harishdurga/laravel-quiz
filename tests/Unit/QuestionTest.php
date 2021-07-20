@@ -31,4 +31,15 @@ class QuestionTest extends TestCase
         ]);
         $this->assertEquals($questionType->questions->count(), 2);
     }
+
+    /** @test */
+    function question_and_topics_relation()
+    {
+        $topic1 = Topic::factory()->create(['topic' => 'Test Topic One']);
+        $topic2 = Topic::factory()->create(['topic' => 'Test Topic Two']);
+        $question = Question::factory()->create();
+        $question->topics()->attach($topic1);
+        $question->topics()->attach($topic2);
+        $this->assertEquals(2, $question->topics->count());
+    }
 }
