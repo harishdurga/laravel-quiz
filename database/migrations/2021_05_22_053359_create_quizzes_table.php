@@ -24,6 +24,7 @@ class CreateQuizzesTable extends Migration
             $table->unsignedBigInteger('author_id')->nullable(); //Author model id
             $table->string('author_type')->nullable(); //Author model type
             $table->tinyInteger('is_published')->default(0); //Quiz is published if 1, unblished 0
+            $table->unsignedInteger('no_of_attempts')->default(0); //Number of times the quiz can be attempted. 0 = unlimited attempts
             $table->timestamps();
         });
     }

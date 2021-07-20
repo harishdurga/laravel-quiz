@@ -9,7 +9,8 @@ return [
         'quiz_questions' => 'quiz_questions',
         'quiz_question_options' => 'quiz_question_options',
         'quiz_topics' => 'quiz_topics',
-        'quiz_topic_quiz' => 'quiz_topic_quiz'
+        'quiz_topic_quiz' => 'quiz_topic_quiz',
+        'quiz_attempts' => 'quiz_attempts'
     ],
 
 ];
