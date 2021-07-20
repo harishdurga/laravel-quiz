@@ -14,4 +14,14 @@ class QuestionType extends Model
     {
         return config('laravel-quiz.table_names.question_types');
     }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    protected static function newFactory()
+    {
+        return \Harishdurga\LaravelQuiz\Database\Factories\QuestionTypeFactory::new();
+    }
 }

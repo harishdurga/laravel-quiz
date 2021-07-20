@@ -35,6 +35,18 @@ class CreateQuizzesTable extends Migration
             $table->string('question_type');
             $table->timestamps();
         });
+
+        //Questions Table
+        Schema::create($this->tableNames['questions'], function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('question');
+            $table->unsignedBigInteger('question_type_id');
+            $table->text('media_url')->nullable();
+            $table->string('media_type')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+            $table->foreign('question_type_id')->references('id')->on($this->tableNames['question_types'])->onDelete('cascade');
+        });
     }
 
     /**
@@ -48,6 +60,10 @@ class CreateQuizzesTable extends Migration
             $table->dropForeign(['parent_id']);
         });
         Schema::drop($this->tableNames['topics']);
+        Schema::table($this->tableNames['questions'], function (Blueprint $table) {
+            $table->dropForeign(['question_type_id']);
+        });
+        Schema::drop($this->tableNames['questions']);
         Schema::drop($this->tableNames['question_types']);
     }
 }
