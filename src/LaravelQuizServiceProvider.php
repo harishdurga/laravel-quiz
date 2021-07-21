@@ -16,7 +16,7 @@ class LaravelQuizServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-quiz');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-quiz');
-        // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations', 'laravel-quiz');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations', 'laravel-quiz');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
