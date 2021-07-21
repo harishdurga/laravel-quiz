@@ -2,6 +2,7 @@
 
 namespace Harishdurga\LaravelQuiz\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,5 +37,10 @@ class Question extends Model
     public function quiz_questions()
     {
         return $this->hasMany(QuizQuestion::class);
+    }
+
+    public function correct_options(): Collection
+    {
+        return $this->options()->where('is_correct', 1)->get();
     }
 }

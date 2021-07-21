@@ -86,6 +86,7 @@ class CreateQuizzesTable extends Migration
             $table->unsignedInteger('duration')->default(0); //0 means no duration
             $table->timestamp('valid_from')->default(now());
             $table->timestamp('valid_upto')->nullable(); //null means no expiry
+            $table->unsignedInteger('time_between_attempts')->default(0); //0 means no time between attempts, immediately
             $table->timestamps();
         });
 
@@ -94,8 +95,10 @@ class CreateQuizzesTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('quiz_id');
             $table->unsignedBigInteger('question_id');
-            $table->float('marks')->default(0); //0 means no marks
+            $table->unsignedFloat('marks')->default(0); //0 means no marks
+            $table->unsignedFloat('negative_marks')->default(0); //0 means no negative marks in case of wrong answer
             $table->boolean('is_optional')->default(false); //0 means not optional, 1 means optional
+            $table->unsignedInteger('order')->default(0);
             $table->timestamps();
             $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
             $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
