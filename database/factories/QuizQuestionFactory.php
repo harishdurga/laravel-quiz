@@ -3,6 +3,7 @@
 namespace Harishdurga\LaravelQuiz\Database\Factories;
 
 use Harishdurga\LaravelQuiz\Models\QuizQuestion;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class QuizQuestionFactory extends Factory
@@ -11,11 +12,12 @@ class QuizQuestionFactory extends Factory
 
     public function definition()
     {
+
         return [
-            'question' => $this->faker->text(500),
-            'points' => $this->faker->numberBetween(1, 10),
-            'type' => 'single_option',
-            'quiz_id' => 1
+            'quiz_id' => null,
+            'question_id' => null,
+            'marks' => 0,
+            'is_optional' => false,
         ];
     }
 }

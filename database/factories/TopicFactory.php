@@ -3,12 +3,12 @@
 namespace Harishdurga\LaravelQuiz\Database\Factories;
 
 use Illuminate\Support\Str;
-use Harishdurga\LaravelQuiz\Models\QuizTopic;
+use Harishdurga\LaravelQuiz\Models\Topic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class QuizTopicFactory extends Factory
+class TopicFactory extends Factory
 {
-    protected $model = QuizTopic::class;
+    protected $model = Topic::class;
 
     public function definition()
     {

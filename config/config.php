@@ -5,12 +5,15 @@
  */
 return [
     'table_names' => [
+        'topics' => 'topics',
+        'question_types' => 'question_types',
+        'questions' => 'questions',
+        'topicables' => 'topicables',
+        'question_options' => 'question_options',
         'quizzes' => 'quizzes',
         'quiz_questions' => 'quiz_questions',
-        'quiz_question_options' => 'quiz_question_options',
-        'quiz_topics' => 'quiz_topics',
-        'quiz_topic_quiz' => 'quiz_topic_quiz',
-        'quiz_attempts' => 'quiz_attempts'
+        'quiz_attempts' => 'quiz_attempts',
+        'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
 
 ];

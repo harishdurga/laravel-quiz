@@ -3,6 +3,7 @@
 namespace Harishdurga\LaravelQuiz\Database\Factories;
 
 use Harishdurga\LaravelQuiz\Models\Quiz;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class QuizFactory extends Factory
@@ -11,15 +12,21 @@ class QuizFactory extends Factory
 
     public function definition()
     {
+        $title = $this->faker->title;
         return [
-            'title' => $this->faker->text(200),
-            'description' => $this->faker->text(1000),
-            'code' => $this->faker->unique()->text,
-            'points_to_pass' => $this->faker->numberBetween(10, 100),
-            'additional_data' => json_encode(['first_name' => 'hello', 'last_name' => 'world']),
-            'is_published' => $this->faker->numberBetween(0, 1),
-            'author_id' => null,
-            'author_type' => null
+            'title' => $title,
+            'slug' => Str::slug($title),
+            'description' => $this->faker->paragraph,
+            'media_url' => $this->faker->url,
+            'total_marks' => 0,
+            'pass_marks' => 0,
+            'max_attempts' => 0,
+            'is_published' => 1,
+            'media_url' => $this->faker->imageUrl(300, 300),
+            'media_type' => 'image',
+            'duration' => 0,
+            'valid_from' => date('Y-m-d H:i:s'),
+            'valid_upto' => null
         ];
     }
 }

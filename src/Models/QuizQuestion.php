@@ -8,26 +8,30 @@ use Illuminate\Database\Eloquent\Model;
 class QuizQuestion extends Model
 {
     use HasFactory;
-
     protected $guarded = ['id'];
 
     public function getTable()
     {
-        return config('laravel-quiz.table_names.quiz_questions', parent::getTable());
-    }
-
-    public function quiz()
-    {
-        return $this->belongsTo(Quiz::class, 'quiz_id');
+        return config('laravel-quiz.table_names.quiz_questions');
     }
 
     protected static function newFactory()
     {
-        return \Harishdurga\LaravelQuiz\Database\Factories\QuizQuestionFactory::new();
+        return new \Harishdurga\LaravelQuiz\Database\Factories\QuizQuestionFactory();
     }
 
-    public function options()
+    public function quiz()
     {
-        return $this->hasMany(QuizQuestionOption::class, 'quiz_question_id');
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(QuizAttemptAnswer::class);
     }
 }
