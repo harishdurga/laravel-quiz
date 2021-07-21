@@ -4,10 +4,11 @@ namespace Harishdurga\LaravelQuiz\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Topic extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
 
@@ -34,5 +35,10 @@ class Topic extends Model
     public function questions()
     {
         return $this->morphedByMany(Question::class, 'topicable');
+    }
+
+    public function quizzes()
+    {
+        return $this->morphedByMany(Quiz::class, 'topicable');
     }
 }
