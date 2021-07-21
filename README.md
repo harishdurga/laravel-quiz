@@ -19,6 +19,10 @@ composer require harishdurga/laravel-quiz
 
 ## Usage
 
+### Class Diagram
+![LaravelQuiz](https://user-images.githubusercontent.com/10380630/126498504-6b0f3956-67c7-47f7-88b1-653b33f9dd77.jpg)
+
+
 ### Publish Vendor Files (config, mingrations,seeder)
 
 ```bash
