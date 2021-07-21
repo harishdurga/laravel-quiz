@@ -46,8 +46,10 @@ php artisan vendor:publish --provider="Harishdurga\LaravelQuiz\LaravelQuizServic
 
 ### Question Types
 
-```php
+A seeder class `QuestionTypeSeeder ` will be publsihed into the `database/seeders` folder. Run the following command to seed question types.
 
+```bash
+php artisan db:seed --class=QuestionTypeSeeder
 ```
 
 Currently this package is configured to only handle the following type of questions
@@ -55,6 +57,16 @@ Currently this package is configured to only handle the following type of questi
 - `multiple_choice_single_answer`
 - `multiple_choice_multiple_answer`
 - `fill_the_blank`
+  Create a QuestionType:
+
+```php
+$topic = Topic::create([
+            'topic' => 'Test Topic',
+            'slug'=>'test-topic'
+            'parent_id'=>$parent_topic->id,
+            'is_active'=>true
+        ]);
+```
 
 ### Testing
 
