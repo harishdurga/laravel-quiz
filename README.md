@@ -60,13 +60,145 @@ Currently this package is configured to only handle the following type of questi
   Create a QuestionType:
 
 ```php
-$topic = Topic::create([
-            'topic' => 'Test Topic',
-            'slug'=>'test-topic'
-            'parent_id'=>$parent_topic->id,
-            'is_active'=>true
+QuestionType::create(['question_type'=>'select_all']);
+```
+
+### Create Question
+
+```php
+$question_one = Question::create([
+            'question' => 'What is an algorithm?',
+            'question_type_id' => 1,
+            'is_active' => true,
+            'media_url'=>'url',
+            'media_type'=>'image'
         ]);
 ```
+
+### Fecth Questions Of A Question Type
+
+```php
+$question_type->questions
+```
+
+### Attach Topics To Question
+
+```php
+$question->topics()->attach([$computer_science->id, $algorithms->id]);
+```
+
+### Question Option
+
+```php
+$question_two_option_one = QuestionOption::create([
+            'question_id' => $question_two->id,
+            'option' => 'array',
+            'is_correct' => true,
+            'media_type'=>'image',
+            'media_url'=>'media url'
+        ]);
+```
+
+### Fetch Options Of A Question
+
+```php
+$question->options
+```
+
+### Create Quiz
+
+```php
+$quiz = Quiz::create([
+            'title' => 'Computer Sceince Quiz',
+            'description' => 'Test your knowledge of computer science',
+            'slug' => 'computer-science-quiz',
+            'time_between_attempts' => 0, //Time in seconds between each attempt
+            'total_marks' => 10,
+            'pass_marks' => 6,
+            'max_attempts' => 1,
+            'is_published' => 1,
+            'valid_from' => now(),
+            'valid_upto' => now()->addDay(5),
+            'media_url'=>'',
+            'media_type'=>''
+        ]);
+```
+
+### Add Question To Quiz
+
+```php
+$quiz_question =  QuizQuestion::create([
+            'quiz_id' => $quiz->id,
+            'question_id' => $question->id,
+            'marks' => 3,
+            'order' => 1,
+            'negative_marks'=>-1,
+            'is_optional'=>false
+        ]);
+```
+
+### Fetch Quiz Questions
+
+```php
+$quiz->questions
+```
+
+### Attempt The Quiz
+
+```php
+$quiz_attempt = QuizAttempt::create([
+            'quiz_id' => $quiz->id,
+            'participant_id' => $participant->id,
+            'participant_type' => get_class($participant)
+        ]);
+```
+
+### Get the Quiz Attempt Participant
+
+`MorphTo` relation.
+
+```php
+$quiz_attempt->participant
+```
+
+### Answer Quiz Attempt
+
+```php
+QuizAttemptAnswer::create(
+            [
+                'quiz_attempt_id' => $quiz_attempt->id,
+                'quiz_question_id' => $quiz_question->id,
+                'question_option_id' => $question_option->id,
+            ]
+        );
+```
+
+A `QuizAttemptAnswer` belongs to `QuizAttempt`,`QuizQuestion` and `QuestionOption`
+
+### Get Quiz Attempt Score
+
+```php
+$quiz_attempt->caclculate_score()
+```
+
+In case of no answer found for a quiz question which is not optional, a negative score will be applied if any.
+
+### Get Correct Option Of A Question
+
+```php
+$question->correct_options
+```
+
+Return a collection of `QuestionOption`.
+
+```php
+public function correct_options(): Collection
+    {
+        return $this->options()->where('is_correct', 1)->get();
+    }
+```
+
+Please refer unit and features tests for more understanding.
 
 ### Testing
 
