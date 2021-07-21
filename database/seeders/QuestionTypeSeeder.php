@@ -1,7 +1,5 @@
 <?php
 
-namespace Harishdurga\LaravelQuiz\Database\Seeders;
-
 use Harishdurga\LaravelQuiz\Models\QuestionType;
 use Illuminate\Database\Seeder;
 
