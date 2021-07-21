@@ -24,7 +24,7 @@ class LaravelQuizServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/config.php' => config_path('laravel-quiz.php'),
             ], 'config');
             $this->publishes([
-                __DIR__ . '/../database/seeders/' => database_path('seeders/laravel-quiz'),
+                __DIR__ . '/../database/seeders/' => database_path('seeders/'),
             ], 'seeds');
             $this->publishes([
                 __DIR__ . '/../database/migrations/' => database_path('migrations/laravel-quiz'),

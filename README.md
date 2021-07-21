@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/harishdurga/laravel-quiz.svg?style=flat-square)](https://packagist.org/packages/harishdurga/laravel-quiz)
 ![GitHub Actions](https://github.com/harishdurga/laravel-quiz/actions/workflows/main.yml/badge.svg)
 
-With this package you can easily get quiz functionality into your Laravel project. Coming soon..
+With this package you can easily get quiz functionality into your Laravel project.
 
 ## Installation
 
@@ -14,11 +14,47 @@ You can install the package via composer:
 composer require harishdurga/laravel-quiz
 ```
 
+- Laravel Version: 8.X
+- PHP Version: 8.X
+
 ## Usage
 
-```php
-// Usage description here
+### Publish Vendor Files (config, mingrations,seeder)
+
+```bash
+php artisan vendor:publish --provider="Harishdurga\LaravelQuiz\LaravelQuizServiceProvider"
 ```
+
+### Create Topic
+
+```php
+    $computer_science = Topic::create([
+        'topic' => 'Computer Science',
+        'slug' => 'computer-science',
+    ]);
+```
+
+#### Create Sub Topics
+
+```php
+    $algorithms = Topic::create([
+            'topic' => 'Algorithms',
+            'slug' => 'algorithms'
+        ]);
+        $computer_science->children()->save($algorithms);
+```
+
+### Question Types
+
+```php
+
+```
+
+Currently this package is configured to only handle the following type of questions
+
+- `multiple_choice_single_answer`
+- `multiple_choice_multiple_answer`
+- `fill_the_blank`
 
 ### Testing
 
@@ -40,8 +76,8 @@ If you discover any security related issues, please email durgaharish5@gmail.com
 
 ## Credits
 
--   [Harish Durga](https://github.com/harishdurga)
--   [All Contributors](../../contributors)
+- [Harish Durga](https://github.com/harishdurga)
+- [All Contributors](../../contributors)
 
 ## License
 
