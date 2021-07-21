@@ -16,7 +16,7 @@ class LaravelQuizServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-quiz');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-quiz');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations', 'laravel-quiz');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
@@ -26,6 +26,9 @@ class LaravelQuizServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../database/seeders/' => database_path('seeders/laravel-quiz'),
             ], 'seeds');
+            $this->publishes([
+                __DIR__ . '/../database/migrations/' => database_path('migrations/laravel-quiz'),
+            ], 'migrations');
 
             // Publishing the views.
             /*$this->publishes([
