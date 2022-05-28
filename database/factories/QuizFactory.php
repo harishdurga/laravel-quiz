@@ -17,7 +17,6 @@ class QuizFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => $this->faker->paragraph,
-            'media_url' => $this->faker->url,
             'total_marks' => 0,
             'pass_marks' => 0,
             'max_attempts' => 0,
@@ -26,7 +25,12 @@ class QuizFactory extends Factory
             'media_type' => 'image',
             'duration' => 0,
             'valid_from' => date('Y-m-d H:i:s'),
-            'valid_upto' => null
+            'valid_upto' => null,
+            'negative_marking_settings' => [
+                'enable_negative_marks' => false,
+                'negative_marking_type' => 'fixed',
+                'negative_mark_value' => 0,
+            ]
         ];
     }
 }

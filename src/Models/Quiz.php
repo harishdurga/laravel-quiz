@@ -11,6 +11,14 @@ class Quiz extends Model
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'negative_marking_settings' => 'json',
+    ];
 
     public function getTable()
     {
