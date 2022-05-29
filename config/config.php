@@ -15,10 +15,10 @@ return [
         'quiz_attempts' => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
-    'answer_pickers' => [
-        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_one',
-        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_two',
-        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_three',
+    'get_score_for_question_type' => [
+        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
+        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',
+        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_3_question',
     ]
 
 ];
