@@ -39,13 +39,8 @@ class QuizAttempt extends Model
         $quiz_attempt_answers = [];
         foreach ($quiz_questions_collection as $key => $quiz_question) {
             $question = $quiz_question->question;
-            $correct_answer = null;
-            if ($question->question_type_id == 1) {
-                $correct_answer =  ($question->correct_options())->first()->id;
-            } elseif ($question->question_type_id == 2) {
-                $correct_answer =  ($question->correct_options())->pluck('id');
-            } elseif ($question->question_type_id == 3) {
-                $correct_answer = ($question->correct_options())->first()->option;
+            if (isset(config('laravel-quiz.answer_pickers')[$question->question_type_id])) {
+                $correct_answer = call_user_func_array(config('laravel-quiz.answer_pickers')[$question->question_type_id], [$question]);
             } else {
                 $correct_answer = null;
             }
@@ -124,5 +119,20 @@ class QuizAttempt extends Model
             }
         }
         return $score;
+    }
+
+    public static function get_correct_answer_type_one(Question $question)
+    {
+        return ($question->correct_options())->first()->id;
+    }
+
+    public static function get_correct_answer_type_two(Question $question)
+    {
+        return ($question->correct_options())->pluck('id');
+    }
+
+    public static function get_correct_answer_type_three(Question $question)
+    {
+        return ($question->correct_options())->first()->option;
     }
 }

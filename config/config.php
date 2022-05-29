@@ -15,5 +15,10 @@ return [
         'quiz_attempts' => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
+    'answer_pickers' => [
+        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_one',
+        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_two',
+        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_correct_answer_type_three',
+    ]
 
 ];
