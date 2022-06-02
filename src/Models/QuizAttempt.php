@@ -45,9 +45,11 @@ class QuizAttempt extends Model
         foreach ($this->answers as $key => $quiz_attempt_answer) {
             $quiz_attempt_answers[$quiz_attempt_answer->quiz_question_id][] = $quiz_attempt_answer;
         }
+        // print_r($quiz_attempt_answers);
         foreach ($quiz_questions_collection as $quiz_question) {
             $question = $quiz_question->question;
-            $score += call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$question->question_type_id], [$this, $quiz_question, $quiz_attempt_answers[$quiz_question->id], $data]);
+            $score += call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$question->question_type_id], [$this, $quiz_question, $quiz_attempt_answers[$quiz_question->id] ?? [], $data]);
+            print_r("Score : $score \n");
         }
         return $score;
     }
@@ -61,9 +63,10 @@ class QuizAttempt extends Model
         $question = $quizQuestion->question;
         $correct_answer = ($question->correct_options())->first()->id;
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        print_r(sprintf("Question Type: 1, Correct Answer: %s, Negative Marks:%s \n", $correct_answer, $negative_marks));
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
-                return $quizQuestionAnswers[0]->option_id == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
+                return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
             } else {
                 return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
             }
@@ -81,12 +84,14 @@ class QuizAttempt extends Model
         $question = $quizQuestion->question;
         $correct_answer = ($question->correct_options())->pluck('id');
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        print_r(sprintf("Question Type: 2, Correct Answer: %s, Negative Marks:%s \n", $correct_answer, $negative_marks));
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
                 $temp_arr = [];
                 foreach ($quizQuestionAnswers as  $answer) {
-                    $temp_arr[] = $answer->option_id;
+                    $temp_arr[] = $answer->question_option_id;
                 }
+                print_r($temp_arr, "Temp Arr \n");
                 return $correct_answer->toArray() == $temp_arr ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
             } else {
                 return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
@@ -103,8 +108,9 @@ class QuizAttempt extends Model
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
-        $correct_answer = ($question->correct_options())->pluck('id');
+        $correct_answer = ($question->correct_options())->first()->option;
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        print_r(sprintf("Question Type: 3, Correct Answer: %s, Negative Marks:%s \n", $correct_answer, $negative_marks));
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
                 return  $quizQuestionAnswers[0]->answer == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
