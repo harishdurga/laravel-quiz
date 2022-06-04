@@ -27,7 +27,7 @@ class QuizFactory extends Factory
             'valid_from' => date('Y-m-d H:i:s'),
             'valid_upto' => null,
             'negative_marking_settings' => [
-                'enable_negative_marks' => false,
+                'enable_negative_marks' => true,
                 'negative_marking_type' => 'fixed',
                 'negative_mark_value' => 0,
             ]

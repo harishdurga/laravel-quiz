@@ -18,6 +18,132 @@ class QuizAttemptTest extends TestCase
 {
     use RefreshDatabase;
 
+    function init($questionType = 1, $enableNegativeMarks = true, $negativeMarkingType = 'fixed', $quizNegativemarkValue = 0, $marks = 1, $negativeMarks = 0)
+    {
+        $user = Author::create(
+            ['name' => "John Doe"]
+        );
+        $options = [];
+        //Question Types
+        QuestionType::insert(
+            [
+                [
+                    'question_type' => 'multiple_choice_single_answer',
+                ],
+                [
+                    'question_type' => 'multiple_choice_multiple_answer',
+                ],
+                [
+                    'question_type' => 'fill_the_blank',
+                ]
+            ]
+        );
+        if ($questionType == 1) {
+            $question = Question::factory()->create([
+                'question' => 'How many layers in OSI model?',
+                'question_type_id' => 1,
+                'is_active' => false,
+            ]);
+            $question_option_one = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '5',
+                'is_correct' => false,
+            ]);
+            $question_option_two = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '8',
+                'is_correct' => false,
+            ]);
+            $question_option_three = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '10',
+                'is_correct' => false,
+            ]);
+            $question_option_four = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '7',
+                'is_correct' => true,
+            ]);
+            $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
+        } elseif ($questionType == 2) {
+            $question = Question::factory()->create([
+                'question' => 'Which of the below is a data structure?',
+                'question_type_id' => 2,
+                'is_active' => true,
+            ]);
+            $question_option_one = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => 'array',
+                'is_correct' => true,
+            ]);
+            $question_option_two = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => 'object',
+                'is_correct' => true,
+            ]);
+            $question_option_three = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => 'for loop',
+                'is_correct' => false,
+            ]);
+            $question_option_four = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => 'method',
+                'is_correct' => false,
+            ]);
+            $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
+        } else {
+            $question = Question::factory()->create([
+                'question' => 'How many layers in OSI model?',
+                'question_type_id' => 1,
+                'is_active' => false,
+            ]);
+            $question_option_one = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '5',
+                'is_correct' => false,
+            ]);
+            $question_option_two = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '8',
+                'is_correct' => false,
+            ]);
+            $question_option_three = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '10',
+                'is_correct' => false,
+            ]);
+            $question_option_four = QuestionOption::factory()->create([
+                'question_id' => $question->id,
+                'option' => '7',
+                'is_correct' => true,
+            ]);
+            $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
+        }
+        $quiz = Quiz::factory()->make()->create([
+            'title' => 'Sample Quiz',
+            'slug' => 'sample-quiz',
+            'negative_marking_settings' => [
+                'enable_negative_marks' => $enableNegativeMarks,
+                'negative_marking_type' => $negativeMarkingType,
+                'negative_mark_value' => $quizNegativemarkValue,
+            ]
+        ]);
+        $quizQuestion =  QuizQuestion::factory()->create([
+            'quiz_id' => $quiz->id,
+            'question_id' => $question->id,
+            'marks' => $marks,
+            'order' => 1,
+            'negative_marks' => $negativeMarks,
+        ]);
+        $quizAttempt = QuizAttempt::create([
+            'quiz_id' => $quiz->id,
+            'participant_id' => $user->id,
+            'participant_type' => get_class($user)
+        ]);
+        return [$user, $question, $options, $quiz, $quizQuestion, $quizAttempt];
+    }
+
     /** @test */
     function get_score_for_type_1_question_no_negative_marks()
     {
@@ -550,7 +676,7 @@ class QuizAttemptTest extends TestCase
             'title' => 'Sample Quiz',
             'slug' => 'sample-quiz',
             'negative_marking_settings' => [
-                'enable_negative_marks' => false,
+                'enable_negative_marks' => true,
                 'negative_marking_type' => 'fixed',
                 'negative_mark_value' => 0,
             ]
@@ -583,5 +709,53 @@ class QuizAttemptTest extends TestCase
         //     ]
         // );
         $this->assertEquals(-2, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
+    }
+
+    /** @test */
+    function get_score_for_type_2_question_with_negative_marks_question_percentage()
+    {
+        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 8, 2);
+        [$question_option_one, $question_option_two, $question_option_three, $question_option_four] = $options;
+
+        $quiz_attempt_answer_one =  QuizAttemptAnswer::create(
+            [
+                'quiz_attempt_id' => $quiz_attempt->id,
+                'quiz_question_id' => $quiz_question->id,
+                'question_option_id' => $question_option_one->id,
+            ]
+        );
+        $this->assertEquals(-0.16, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
+    }
+
+    /** @test */
+    function get_score_for_type_2_question_with_negative_marks_quiz_fixed()
+    {
+        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::FIXED_NEGATIVE_TYPE, 1, 5, 0);
+        [$question_option_one, $question_option_two, $question_option_three, $question_option_four] = $options;
+
+        $quiz_attempt_answer_one =  QuizAttemptAnswer::create(
+            [
+                'quiz_attempt_id' => $quiz_attempt->id,
+                'quiz_question_id' => $quiz_question->id,
+                'question_option_id' => $question_option_one->id,
+            ]
+        );
+        $this->assertEquals(-1, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
+    }
+
+    /** @test */
+    function get_score_for_type_2_question_with_negative_marks_quiz_percentage()
+    {
+        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 10, 5, 0);
+        [$question_option_one, $question_option_two, $question_option_three, $question_option_four] = $options;
+
+        $quiz_attempt_answer_one =  QuizAttemptAnswer::create(
+            [
+                'quiz_attempt_id' => $quiz_attempt->id,
+                'quiz_question_id' => $quiz_question->id,
+                'question_option_id' => $question_option_one->id,
+            ]
+        );
+        $this->assertEquals(-0.5, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 }

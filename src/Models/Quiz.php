@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Quiz extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
-
+    const FIXED_NEGATIVE_TYPE = 'fixed';
+    const PERCENTAGE_NEGATIVE_TYPE = 'percentage';
     /**
      * The attributes that should be cast.
      *

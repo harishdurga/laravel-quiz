@@ -202,7 +202,7 @@ class QuizTest extends TestCase
             'valid_upto' => null,
         ]);
         $quizTwo = Quiz::find($quizTwo->id);
-        $this->assertEquals(false, $quizTwo->negative_marking_settings['enable_negative_marks']);
+        $this->assertEquals(true, $quizTwo->negative_marking_settings['enable_negative_marks']);
         $quizThree = Quiz::factory()->make()->create([
             'title' => 'Sample Quiz',
             'slug' => 'sample-quiz-3',
