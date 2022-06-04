@@ -31,7 +31,7 @@ class QuizAttempt extends Model
         return $this->hasMany(QuizAttemptAnswer::class);
     }
 
-    public function caclculate_score(): float
+    public function calculate_score(): float
     {
         $score = 0;
         $quiz_questions_collection = $this->quiz->questions()->with('question')->get();

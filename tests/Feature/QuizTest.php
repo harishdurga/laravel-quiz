@@ -229,7 +229,7 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -442,7 +442,7 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(4, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(4, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -670,7 +670,7 @@ class QuizTest extends TestCase
         );
 
         //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -898,7 +898,7 @@ class QuizTest extends TestCase
         );
 
         //Calculate Obtained marks
-        $this->assertEquals(7, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(7, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -1097,7 +1097,7 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -1296,7 +1296,7 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(7, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(7, $quiz_attempt_one->calculate_score());
     }
 
     /** @test */
@@ -1520,9 +1520,9 @@ class QuizTest extends TestCase
 
         $this->assertEquals(4, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(15, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(15, $quiz_attempt_one->calculate_score());
 
         $this->assertEquals(2, $quiz_attempt_two->answers->count());
-        $this->assertEquals(3, $quiz_attempt_two->caclculate_score());
+        $this->assertEquals(3, $quiz_attempt_two->calculate_score());
     }
 }
