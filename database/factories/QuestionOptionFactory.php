@@ -11,7 +11,6 @@ class QuestionOptionFactory extends Factory
 
     public function definition()
     {
-
         return [
             'question_id' => null,
             'option' => $this->faker->word,

@@ -12,7 +12,6 @@ class QuizQuestionFactory extends Factory
 
     public function definition()
     {
-
         return [
             'quiz_id' => null,
             'question_id' => null,

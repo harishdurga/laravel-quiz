@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class QuizAttempt extends Model
 {
     use SoftDeletes;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id'];
 
     public function getTable()

@@ -2,6 +2,7 @@
 
 namespace Harishdurga\LaravelQuiz\Models;
 
+use Harishdurga\LaravelQuiz\Database\Factories\QuizFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,8 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Quiz extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $guarded = ['id'];
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
 
     public function getTable()
     {
@@ -24,7 +30,7 @@ class Quiz extends Model
 
     public static function newFactory()
     {
-        return \Harishdurga\LaravelQuiz\Database\Factories\QuizFactory::new();
+        return QuizFactory::new();
     }
 
     public function questions()

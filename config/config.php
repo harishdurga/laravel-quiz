@@ -1,9 +1,16 @@
 <?php
 
-/*
- * You can place your custom package configuration in here.
- */
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Table Names on Database
+    |--------------------------------------------------------------------------
+    |
+    | You can place your custom package configuration in here.
+    |
+    */
+
     'table_names' => [
         'topics' => 'topics',
         'question_types' => 'question_types',
@@ -15,5 +22,4 @@ return [
         'quiz_attempts' => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
-
 ];

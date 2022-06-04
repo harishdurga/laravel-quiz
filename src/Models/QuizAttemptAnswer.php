@@ -10,19 +10,28 @@ class QuizAttemptAnswer extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id'];
+
     public function getTable()
     {
         return config('laravel-quiz.table_names.quiz_attempt_answers');
     }
+
     public function quiz_attempt()
     {
         return $this->belongsTo(QuizAttempt::class);
     }
+
     public function quiz_question()
     {
         return $this->belongsTo(QuizQuestion::class);
     }
+
     public function question_option()
     {
         return $this->belongsTo(QuestionOption::class);

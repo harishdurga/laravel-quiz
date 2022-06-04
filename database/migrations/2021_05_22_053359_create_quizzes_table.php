@@ -19,7 +19,7 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
-        //Topics Table
+        // Topics Table
         Schema::create($this->tableNames['topics'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('topic');
@@ -31,7 +31,7 @@ class CreateQuizzesTable extends Migration
             $table->foreign('parent_id')->references('id')->on($this->tableNames['topics'])->onDelete('SET NULL');
         });
 
-        //Question Types Table
+        // Question Types Table
         Schema::create($this->tableNames['question_types'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('question_type');
@@ -39,7 +39,7 @@ class CreateQuizzesTable extends Migration
             $table->softDeletes();
         });
 
-        //Questions Table
+        // Questions Table
         Schema::create($this->tableNames['questions'], function (Blueprint $table) {
             $table->increments('id');
             $table->text('question');
@@ -52,7 +52,7 @@ class CreateQuizzesTable extends Migration
             $table->foreign('question_type_id')->references('id')->on($this->tableNames['question_types'])->onDelete('cascade');
         });
 
-        //Quiz, Questions and Topics Relations Table
+        // Quiz, Questions and Topics Relations Table
         Schema::create($this->tableNames['topicables'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('topic_id');
@@ -62,7 +62,7 @@ class CreateQuizzesTable extends Migration
             $table->foreign('topic_id')->references('id')->on($this->tableNames['topics'])->onDelete('cascade');
         });
 
-        //Question Options Table
+        // Question Options Table
         Schema::create($this->tableNames['question_options'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('question_id');
@@ -75,7 +75,7 @@ class CreateQuizzesTable extends Migration
             $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
         });
 
-        //Quizzes Table
+        // Quizzes Table
         Schema::create($this->tableNames['quizzes'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
@@ -95,7 +95,7 @@ class CreateQuizzesTable extends Migration
             $table->softDeletes();
         });
 
-        //Quiz Questions Table
+        // Quiz Questions Table
         Schema::create($this->tableNames['quiz_questions'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('quiz_id');
@@ -111,7 +111,7 @@ class CreateQuizzesTable extends Migration
             $table->unique(['quiz_id', 'question_id']);
         });
 
-        //Quiz Attempts Table
+        // Quiz Attempts Table
         Schema::create($this->tableNames['quiz_attempts'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('quiz_id');
@@ -122,7 +122,7 @@ class CreateQuizzesTable extends Migration
             $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
         });
 
-        //Quiz Attempt Answers Table
+        // Quiz Attempt Answers Table
         Schema::create($this->tableNames['quiz_attempt_answers'], function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('quiz_attempt_id');
