@@ -18,6 +18,18 @@ class Quiz extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'negative_marking_settings' => 'json',
+    ];
+
+    const FIXED_NEGATIVE_TYPE = 'fixed';
+    const PERCENTAGE_NEGATIVE_TYPE = 'percentage';
+
     public function getTable()
     {
         return config('laravel-quiz.table_names.quizzes');

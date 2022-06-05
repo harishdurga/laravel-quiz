@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property Quiz $quiz
+ */
 class QuizAttempt extends Model
 {
     use SoftDeletes;
@@ -22,6 +25,9 @@ class QuizAttempt extends Model
         return config('laravel-quiz.table_names.quiz_attempts');
     }
 
+    /**
+     * @return \Harishdurga\LaravelQuiz\Models\Quiz
+     */
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
@@ -37,98 +43,100 @@ class QuizAttempt extends Model
         return $this->hasMany(QuizAttemptAnswer::class);
     }
 
-    public function calculate_score(): float
+    public function calculate_score($data = null): float
     {
         $score = 0;
-        $quiz_questions_collection = $this->quiz->questions()->with('question')->get();
-        $quiz_questions = [];
+        $quiz_questions_collection = $this->quiz->questions()->with('question')->orderBy('id', 'ASC')->get();
         $quiz_attempt_answers = [];
-        foreach ($quiz_questions_collection as $key => $quiz_question) {
-            $question = $quiz_question->question;
-            $correct_answer = null;
-            if ($question->question_type_id == 1) {
-                $correct_answer =  ($question->correct_options())->first()->id;
-            } elseif ($question->question_type_id == 2) {
-                $correct_answer =  ($question->correct_options())->pluck('id');
-            } elseif ($question->question_type_id == 3) {
-                $correct_answer = ($question->correct_options())->first()->option;
-            } else {
-                $correct_answer = null;
-            }
-            $quiz_questions[$quiz_question->id] = [
-                'question_type_id' => $question->question_type_id,
-                'is_optional' => $quiz_question->is_optional,
-                'marks' => $quiz_question->marks,
-                'negative_marks' => $quiz_question->negative_marks,
-                'correct_answer' => $correct_answer
-            ];
-        }
         foreach ($this->answers as $key => $quiz_attempt_answer) {
-            $quiz_attempt_answers[$quiz_attempt_answer->quiz_question_id][] = ['option_id' => $quiz_attempt_answer->question_option_id, 'answer' => $quiz_attempt_answer->answer];
+            $quiz_attempt_answers[$quiz_attempt_answer->quiz_question_id][] = $quiz_attempt_answer;
         }
-        foreach ($quiz_questions as $quiz_question_id => $quiz_question) {
-            if ($quiz_question['question_type_id'] == 1) {
-                if (!empty($quiz_question['correct_answer'])) {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        if ($quiz_attempt_answers[$quiz_question_id][0]['option_id'] == $quiz_question['correct_answer']) {
-                            $score += $quiz_question['marks'];
-                        } else {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    } else {
-                        if (!$quiz_question['is_optional']) {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    }
-                } else {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        $score += $quiz_question['marks'];
-                    }
-                }
-            } elseif ($quiz_question['question_type_id'] == 2) {
-                if (!empty($quiz_question['correct_answer'])) {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        $temp_arr = [];
-                        foreach ($quiz_attempt_answers[$quiz_question_id] as $key => $answer) {
-                            $temp_arr[] = $answer['option_id'];
-                        }
-                        if ($quiz_question['correct_answer']->toArray() == $temp_arr) {
-                            $score += $quiz_question['marks'];
-                        } else {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    } else {
-                        if (!$quiz_question['is_optional']) {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    }
-                } else {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        $score += $quiz_question['marks'];
-                    }
-                }
-            } elseif ($quiz_question['question_type_id'] == 3) {
-                if (!empty($quiz_question['correct_answer'])) {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        if ($quiz_question['correct_answer'] == $quiz_attempt_answers[$quiz_question_id][0]['answer']) {
-                            $score += $quiz_question['marks'];
-                        } else {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    } else {
-                        if (!$quiz_question['is_optional']) {
-                            $score -= $quiz_question['negative_marks'];
-                        }
-                    }
-                } else {
-                    if (isset($quiz_attempt_answers[$quiz_question_id])) {
-                        $score += $quiz_question['marks'];
-                    }
-                }
-            } else {
-                $score += $quiz_question['marks'];
-            }
+        foreach ($quiz_questions_collection as $quiz_question) {
+            $question = $quiz_question->question;
+            $score += call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$question->question_type_id], [$this, $quiz_question, $quiz_attempt_answers[$quiz_question->id] ?? [], $data]);
         }
         return $score;
+    }
+
+    /**
+     * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
+     */
+    public static function get_score_for_type_1_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    {
+        $quiz = $quizAttempt->quiz;
+        $question = $quizQuestion->question;
+        $correct_answer = ($question->correct_options())->first()->id;
+        $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        if (!empty($correct_answer)) {
+            if (count($quizQuestionAnswers)) {
+                return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
+            } else {
+                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
+            }
+        } else {
+            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+        }
+    }
+
+    /**
+     * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
+     */
+    public static function get_score_for_type_2_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    {
+        $quiz = $quizAttempt->quiz;
+        $question = $quizQuestion->question;
+        $correct_answer = ($question->correct_options())->pluck('id');
+        $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        if (!empty($correct_answer)) {
+            if (count($quizQuestionAnswers)) {
+                $temp_arr = [];
+                foreach ($quizQuestionAnswers as  $answer) {
+                    $temp_arr[] = $answer->question_option_id;
+                }
+                return $correct_answer->toArray() == $temp_arr ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
+            } else {
+                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
+            }
+        } else {
+            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+        }
+    }
+
+    /**
+     * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
+     */
+    public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    {
+        $quiz = $quizAttempt->quiz;
+        $question = $quizQuestion->question;
+        $correct_answer = ($question->correct_options())->first()->option;
+        $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
+        if (!empty($correct_answer)) {
+            if (count($quizQuestionAnswers)) {
+                return  $quizQuestionAnswers[0]->answer == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
+            } else {
+                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
+            }
+        } else {
+            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+        }
+    }
+
+    public static function get_negative_marks_for_question(Quiz $quiz, QuizQuestion $quizQuestion): float
+    {
+        $negative_marking_settings = $quiz->negative_marking_settings ?? [
+            'enable_negative_marks' => true,
+            'negative_marking_type' => 'fixed',
+            'negative_mark_value' => 0,
+        ];
+        if (!$negative_marking_settings['enable_negative_marks']) { // If negative marking is disabled
+            return 0;
+        }
+        if (!empty($quizQuestion->negative_marks)) {
+            return $negative_marking_settings['negative_marking_type'] == 'fixed' ?
+                ($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) : ($quizQuestion->marks * (($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) / 100));
+        } else {
+            return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
+        }
     }
 }
