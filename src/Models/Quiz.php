@@ -2,10 +2,11 @@
 
 namespace Harishdurga\LaravelQuiz\Models;
 
-use Harishdurga\LaravelQuiz\Database\Factories\QuizFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Harishdurga\LaravelQuiz\Database\Factories\QuizFactory;
 
 class Quiz extends Model
 {
@@ -53,5 +54,21 @@ class Quiz extends Model
     public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);
+    }
+
+    /**
+     * Interact with the user's address.
+     *
+     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function negativeMarkingSettings(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => empty($value) ? [
+                'enable_negative_marks' => true,
+                'negative_marking_type' => Quiz::FIXED_NEGATIVE_TYPE,
+                'negative_mark_value' => 0
+            ] : json_decode($value, true),
+        );
     }
 }
