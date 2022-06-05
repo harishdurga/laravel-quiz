@@ -19,65 +19,61 @@ class CreateQuizzesTable extends Migration
      */
     public function up()
     {
-        //Topics Table
+        // Topics Table
         Schema::create($this->tableNames['topics'], function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('topic');
             $table->string('slug')->unique();
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained($this->tableNames['topics'])->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('parent_id')->references('id')->on($this->tableNames['topics'])->onDelete('SET NULL');
         });
 
-        //Question Types Table
+        // Question Types Table
         Schema::create($this->tableNames['question_types'], function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('question_type');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        //Questions Table
+        // Questions Table
         Schema::create($this->tableNames['questions'], function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->text('question');
-            $table->unsignedInteger('question_type_id');
+            $table->foreignId('question_type_id')->nullable()->constrained($this->tableNames['question_types'])->cascadeOnDelete();
             $table->text('media_url')->nullable();
             $table->string('media_type')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('question_type_id')->references('id')->on($this->tableNames['question_types'])->onDelete('cascade');
         });
 
-        //Quiz, Questions and Topics Relations Table
+        // Quiz, Questions and Topics Relations Table
         Schema::create($this->tableNames['topicables'], function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('topic_id');
+            $table->id();
+            $table->foreignId('topic_id')->nullable()->constrained($this->tableNames['topics'])->cascadeOnDelete();
             $table->unsignedInteger('topicable_id');
             $table->string('topicable_type');
             $table->timestamps();
-            $table->foreign('topic_id')->references('id')->on($this->tableNames['topics'])->onDelete('cascade');
         });
 
-        //Question Options Table
+        // Question Options Table
         Schema::create($this->tableNames['question_options'], function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('question_id');
+            $table->id();
+            $table->foreignId('question_id')->nullable()->constrained($this->tableNames['questions'])->cascadeOnDelete();
             $table->string('option')->nullable();
             $table->string('media_url')->nullable();
             $table->string('media_type')->nullable();
             $table->boolean('is_correct')->default(false);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
         });
 
-        //Quizzes Table
+        // Quizzes Table
         Schema::create($this->tableNames['quizzes'], function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
@@ -95,45 +91,39 @@ class CreateQuizzesTable extends Migration
             $table->softDeletes();
         });
 
-        //Quiz Questions Table
+        // Quiz Questions Table
         Schema::create($this->tableNames['quiz_questions'], function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('quiz_id');
-            $table->unsignedInteger('question_id');
+            $table->id();
+            $table->foreignId('quiz_id')->nullable()->constrained($this->tableNames['quizzes'])->cascadeOnDelete();
+            $table->foreignId('question_id')->nullable()->constrained($this->tableNames['questions'])->cascadeOnDelete();
             $table->unsignedFloat('marks')->default(0); //0 means no marks
             $table->unsignedFloat('negative_marks')->default(0); //0 means no negative marks in case of wrong answer
             $table->boolean('is_optional')->default(false); //0 means not optional, 1 means optional
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
-            $table->foreign('question_id')->references('id')->on($this->tableNames['questions'])->onDelete('cascade');
             $table->unique(['quiz_id', 'question_id']);
         });
 
-        //Quiz Attempts Table
+        // Quiz Attempts Table
         Schema::create($this->tableNames['quiz_attempts'], function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('quiz_id');
+            $table->id();
+            $table->foreignId('quiz_id')->nullable()->constrained($this->tableNames['quizzes'])->cascadeOnDelete();
             $table->unsignedInteger('participant_id');
             $table->string('participant_type');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('quiz_id')->references('id')->on($this->tableNames['quizzes'])->onDelete('cascade');
         });
 
-        //Quiz Attempt Answers Table
+        // Quiz Attempt Answers Table
         Schema::create($this->tableNames['quiz_attempt_answers'], function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('quiz_attempt_id');
-            $table->unsignedInteger('quiz_question_id');
-            $table->unsignedInteger('question_option_id');
+            $table->id();
+            $table->foreignId('quiz_attempt_id')->nullable()->constrained($this->tableNames['quiz_attempts'])->cascadeOnDelete();
+            $table->foreignId('quiz_question_id')->nullable()->constrained($this->tableNames['quiz_questions'])->cascadeOnDelete();
+            $table->foreignId('question_option_id')->nullable()->constrained($this->tableNames['question_options'])->cascadeOnDelete();
             $table->string('answer')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('quiz_attempt_id')->references('id')->on($this->tableNames['quiz_attempts'])->onDelete('cascade');
-            $table->foreign('quiz_question_id')->references('id')->on($this->tableNames['quiz_questions'])->onDelete('cascade');
-            $table->foreign('question_option_id')->references('id')->on($this->tableNames['question_options'])->onDelete('cascade');
         });
     }
 

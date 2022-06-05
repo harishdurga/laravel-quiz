@@ -220,7 +220,7 @@ A `QuizAttemptAnswer` belongs to `QuizAttempt`,`QuizQuestion` and `QuestionOptio
 ### Get Quiz Attempt Score
 
 ```php
-$quiz_attempt->caclculate_score()
+$quiz_attempt->calculate_score()
 ```
 
 In case of no answer found for a quiz question which is not optional, a negative score will be applied if any.

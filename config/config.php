@@ -1,9 +1,16 @@
 <?php
 
-/*
- * You can place your custom package configuration in here.
- */
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Table Names on Database
+    |--------------------------------------------------------------------------
+    |
+    | Enter the names of the tables.
+    |
+    */
+
     'table_names' => [
         'topics' => 'topics',
         'question_types' => 'question_types',
@@ -15,6 +22,16 @@ return [
         'quiz_attempts' => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Question type mapping
+    |--------------------------------------------------------------------------
+    |
+    | You can choose which method to use for scoring.
+    |
+    */
+
     'get_score_for_question_type' => [
         1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
         2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',

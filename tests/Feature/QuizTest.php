@@ -18,7 +18,6 @@ class QuizTest extends TestCase
 {
     use RefreshDatabase;
 
-
     /** @test- */
     function quiz_multiple_choice_single_answer_all_correct_answers()
     {
@@ -43,7 +42,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -58,7 +57,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'What is an algorithm?',
             'question_type_id' => 1,
@@ -88,7 +87,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_one->topics->count());
         $this->assertEquals(4, $question_one->options->count());
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
@@ -119,7 +118,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -152,12 +151,11 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -167,7 +165,7 @@ class QuizTest extends TestCase
             'time_between_attempts' => 0,
         ]);
 
-        //Add Question to Quiz
+        // Add Question to Quiz
         $quiz_question_one =  QuizQuestion::factory()->create([
             'quiz_id' => $quiz->id,
             'question_id' => $question_one->id,
@@ -191,7 +189,7 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
@@ -199,7 +197,7 @@ class QuizTest extends TestCase
             'name' => 'Charlie'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -229,7 +227,7 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
         //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -256,7 +254,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -271,7 +269,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'What is an algorithm?',
             'question_type_id' => 1,
@@ -301,7 +299,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_one->topics->count());
         $this->assertEquals(4, $question_one->options->count());
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
@@ -332,7 +330,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -365,12 +363,11 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -380,7 +377,7 @@ class QuizTest extends TestCase
             'time_between_attempts' => 0,
         ]);
 
-        //Add Question to Quiz
+        // Add Question to Quiz
         $quiz_question_one =  QuizQuestion::factory()->create([
             'quiz_id' => $quiz->id,
             'question_id' => $question_one->id,
@@ -404,7 +401,7 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
@@ -412,7 +409,7 @@ class QuizTest extends TestCase
             'name' => 'Charlie'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -441,8 +438,9 @@ class QuizTest extends TestCase
         );
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
-        //Calculate Obtained marks
-        $this->assertEquals(4, $quiz_attempt_one->caclculate_score());
+
+        // Calculate Obtained marks
+        $this->assertEquals(4, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -469,7 +467,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -484,7 +482,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'What is an algorithm?',
             'question_type_id' => 1,
@@ -514,7 +512,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_one->topics->count());
         $this->assertEquals(4, $question_one->options->count());
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
@@ -545,7 +543,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -578,12 +576,11 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -593,7 +590,7 @@ class QuizTest extends TestCase
             'time_between_attempts' => 0,
         ]);
 
-        //Add Question to Quiz
+        // Add Question to Quiz
         $quiz_question_one =  QuizQuestion::factory()->create([
             'quiz_id' => $quiz->id,
             'question_id' => $question_one->id,
@@ -618,12 +615,12 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -636,8 +633,6 @@ class QuizTest extends TestCase
                 'question_option_id' => $question_one_option_three->id,
             ]
         );
-
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_one->id,
@@ -660,7 +655,6 @@ class QuizTest extends TestCase
             ]
         );
 
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_one->id,
@@ -669,8 +663,8 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        // Calculate Obtained marks
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -697,7 +691,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -712,7 +706,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'What is an algorithm?',
             'question_type_id' => 1,
@@ -742,7 +736,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_one->topics->count());
         $this->assertEquals(4, $question_one->options->count());
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 2,
@@ -773,7 +767,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -806,12 +800,11 @@ class QuizTest extends TestCase
 
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -846,12 +839,12 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -864,7 +857,6 @@ class QuizTest extends TestCase
                 'question_option_id' => $question_one_option_three->id,
             ]
         );
-
 
         QuizAttemptAnswer::create(
             [
@@ -888,7 +880,6 @@ class QuizTest extends TestCase
         //     ]
         // );
 
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_one->id,
@@ -897,8 +888,8 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Calculate Obtained marks
-        $this->assertEquals(7, $quiz_attempt_one->caclculate_score());
+        // Calculate Obtained marks
+        $this->assertEquals(7, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -925,7 +916,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -940,7 +931,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'Full Form Of CPU',
             'question_type_id' => 1,
@@ -955,7 +946,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_one->topics->count());
         $this->assertEquals(1, $question_one->options->count());
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
@@ -986,7 +977,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -1016,15 +1007,13 @@ class QuizTest extends TestCase
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
         $this->assertEquals(2, $question_three->topics->count());
         $this->assertEquals(4, $question_three->options->count());
-
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -1058,7 +1047,7 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
@@ -1066,7 +1055,7 @@ class QuizTest extends TestCase
             'name' => 'Charlie'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -1096,8 +1085,8 @@ class QuizTest extends TestCase
         );
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
-        //Calculate Obtained marks
-        $this->assertEquals(10, $quiz_attempt_one->caclculate_score());
+        // Calculate Obtained marks
+        $this->assertEquals(10, $quiz_attempt_one->calculate_score());
     }
 
     /** @test- */
@@ -1124,7 +1113,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($computer_networks);
         $this->assertEquals(3, $computer_science->children()->count());
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -1139,7 +1128,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'Full Form Of CPU',
             'question_type_id' => 3,
@@ -1185,7 +1174,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $question_two->topics->count());
         $this->assertEquals(4, $question_two->options->count());
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -1215,15 +1204,13 @@ class QuizTest extends TestCase
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
         $this->assertEquals(2, $question_three->topics->count());
         $this->assertEquals(4, $question_three->options->count());
-
         $this->assertEquals(3, $computer_science->questions()->count());
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -1233,7 +1220,7 @@ class QuizTest extends TestCase
             'time_between_attempts' => 0,
         ]);
 
-        //Add Question to Quiz
+        // Add Question to Quiz
         $quiz_question_one =  QuizQuestion::factory()->create([
             'quiz_id' => $quiz->id,
             'question_id' => $question_one->id,
@@ -1257,7 +1244,7 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(10, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
@@ -1265,7 +1252,7 @@ class QuizTest extends TestCase
             'name' => 'Charlie'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -1295,8 +1282,8 @@ class QuizTest extends TestCase
         );
 
         $this->assertEquals(3, $quiz_attempt_one->answers->count());
-        //Calculate Obtained marks
-        $this->assertEquals(7, $quiz_attempt_one->caclculate_score());
+        // Calculate Obtained marks
+        $this->assertEquals(7, $quiz_attempt_one->calculate_score());
     }
 
     /** @test */
@@ -1322,7 +1309,7 @@ class QuizTest extends TestCase
         $computer_science->children()->save($data_structures);
         $computer_science->children()->save($computer_networks);
 
-        //Question Types
+        // Question Types
         QuestionType::insert(
             [
                 [
@@ -1337,7 +1324,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Question One And Options
+        // Question One And Options
         $question_one = Question::factory()->create([
             'question' => 'Full Form Of CPU',
             'question_type_id' => 3,
@@ -1350,7 +1337,7 @@ class QuizTest extends TestCase
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
 
-        //Question Two And Options
+        // Question Two And Options
         $question_two = Question::factory()->create([
             'question' => 'Which of the below is a data structure?',
             'question_type_id' => 2,
@@ -1379,7 +1366,7 @@ class QuizTest extends TestCase
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
 
-        //Question Three And Options
+        // Question Three And Options
         $question_three = Question::factory()->create([
             'question' => 'How many layers in OSI model?',
             'question_type_id' => 1,
@@ -1408,12 +1395,11 @@ class QuizTest extends TestCase
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
 
-        //Quiz
+        // Quiz
         $quiz = Quiz::factory()->create([
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
@@ -1423,7 +1409,7 @@ class QuizTest extends TestCase
             'time_between_attempts' => 0,
         ]);
 
-        //Add Question to Quiz
+        // Add Question to Quiz
         $quiz_question_one =  QuizQuestion::factory()->create([
             'quiz_id' => $quiz->id,
             'question_id' => $question_one->id,
@@ -1449,7 +1435,7 @@ class QuizTest extends TestCase
         $this->assertEquals(3, $quiz->questions->count());
         $this->assertEquals(15, $quiz->questions->sum('marks'));
 
-        //Participants
+        // Participants
         $participant_one = Author::create([
             'name' => 'Bravo'
         ]);
@@ -1457,7 +1443,7 @@ class QuizTest extends TestCase
             'name' => 'Charlie'
         ]);
 
-        //Quiz Attempt One And Answers
+        // Quiz Attempt One And Answers
         $quiz_attempt_one = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_one->id,
@@ -1471,7 +1457,6 @@ class QuizTest extends TestCase
                 'answer' => 'central processing unit'
             ]
         );
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_one->id,
@@ -1486,7 +1471,6 @@ class QuizTest extends TestCase
                 'question_option_id' => $question_two_option_two->id,
             ]
         );
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_one->id,
@@ -1495,7 +1479,7 @@ class QuizTest extends TestCase
             ]
         );
 
-        //Quiz Attempt Two And Answers
+        // Quiz Attempt Two And Answers
         $quiz_attempt_two = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'participant_id' => $participant_two->id,
@@ -1509,7 +1493,6 @@ class QuizTest extends TestCase
                 'answer' => 'central processing unit'
             ]
         );
-
         QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt_two->id,
@@ -1519,10 +1502,10 @@ class QuizTest extends TestCase
         );
 
         $this->assertEquals(4, $quiz_attempt_one->answers->count());
-        //Calculate Obtained marks
-        $this->assertEquals(15, $quiz_attempt_one->caclculate_score());
+        // Calculate Obtained marks
+        $this->assertEquals(15, $quiz_attempt_one->calculate_score());
 
         $this->assertEquals(2, $quiz_attempt_two->answers->count());
-        $this->assertEquals(3, $quiz_attempt_two->caclculate_score());
+        $this->assertEquals(3, $quiz_attempt_two->calculate_score());
     }
 }

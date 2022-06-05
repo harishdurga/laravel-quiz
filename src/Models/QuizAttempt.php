@@ -12,6 +12,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class QuizAttempt extends Model
 {
     use SoftDeletes;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id'];
 
     public function getTable()
@@ -37,7 +43,7 @@ class QuizAttempt extends Model
         return $this->hasMany(QuizAttemptAnswer::class);
     }
 
-    public function caclculate_score($data = null): float
+    public function calculate_score($data = null): float
     {
         $score = 0;
         $quiz_questions_collection = $this->quiz->questions()->with('question')->orderBy('id', 'ASC')->get();

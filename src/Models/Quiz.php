@@ -2,17 +2,22 @@
 
 namespace Harishdurga\LaravelQuiz\Models;
 
+use Harishdurga\LaravelQuiz\Database\Factories\QuizFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Quiz extends Model
 {
     use HasFactory, SoftDeletes;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id'];
-    const FIXED_NEGATIVE_TYPE = 'fixed';
-    const PERCENTAGE_NEGATIVE_TYPE = 'percentage';
+
     /**
      * The attributes that should be cast.
      *
@@ -21,6 +26,9 @@ class Quiz extends Model
     protected $casts = [
         'negative_marking_settings' => 'json',
     ];
+
+    const FIXED_NEGATIVE_TYPE = 'fixed';
+    const PERCENTAGE_NEGATIVE_TYPE = 'percentage';
 
     public function getTable()
     {
@@ -34,7 +42,7 @@ class Quiz extends Model
 
     public static function newFactory()
     {
-        return \Harishdurga\LaravelQuiz\Database\Factories\QuizFactory::new();
+        return QuizFactory::new();
     }
 
     public function questions()
