@@ -19,11 +19,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table($this->tableNames['quizzes'], function (Blueprint $table) {
-            $table->json('negative_marking_settings')->default(json_encode([
-                'enable_negative_marks' => true,
-                'negative_marking_type' => 'fixed',
-                'negative_mark_value' => 0,
-            ]))->after('pass_marks');
+            $table->json('negative_marking_settings')->nullable()->after('pass_marks');
         });
     }
 
