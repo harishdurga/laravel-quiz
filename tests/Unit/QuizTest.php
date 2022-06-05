@@ -172,4 +172,55 @@ class QuizTest extends TestCase
         $this->assertEquals(1, $question_one->options()->first()->answers()->count());
         $this->assertEquals(1, $question_two->options()->first()->answers()->count());
     }
+
+    /** @test */
+    function quiz_check_negative_marking_settings()
+    {
+        $quizOne = Quiz::factory()->make()->create([
+            'title' => 'Sample Quiz',
+            'slug' => 'sample-quiz',
+            'negative_marking_settings' => [
+                'enable_negative_marks' => false,
+                'negative_marking_type' => 'fixed',
+                'negative_mark_value' => 0,
+            ]
+        ]);
+        $this->assertEquals(false, $quizOne->negative_marking_settings['enable_negative_marks']);
+        $quizTwo = Quiz::create([
+            'title' => "Sample Quiz",
+            'slug' => "sample-quiz-two",
+            'description' => "",
+            'media_url' => null,
+            'total_marks' => 0,
+            'pass_marks' => 0,
+            'max_attempts' => 0,
+            'is_published' => 1,
+            'media_url' => null,
+            'media_type' => 'image',
+            'duration' => 0,
+            'valid_from' => date('Y-m-d H:i:s'),
+            'valid_upto' => null,
+        ]);
+        $quizTwo = Quiz::find($quizTwo->id);
+        $this->assertEquals(true, $quizTwo->negative_marking_settings['enable_negative_marks']);
+        $quizThree = Quiz::factory()->make()->create([
+            'title' => 'Sample Quiz',
+            'slug' => 'sample-quiz-3',
+            'negative_marking_settings' => [
+                'enable_negative_marks' => true,
+                'negative_marking_type' => 'percentage',
+                'negative_mark_value' => 10,
+            ]
+        ]);
+        $this->assertEquals(true, $quizThree->negative_marking_settings['enable_negative_marks']);
+        $this->assertEquals('percentage', $quizThree->negative_marking_settings['negative_marking_type']);
+        $this->assertEquals(10, $quizThree->negative_marking_settings['negative_mark_value']);
+        $quizThree->negative_marking_settings = [
+            'enable_negative_marks' => true,
+            'negative_marking_type' => 'percentage',
+            'negative_mark_value' => 23,
+        ];
+        $quizThree->save();
+        $this->assertEquals(23, $quizThree->negative_marking_settings['negative_mark_value']);
+    }
 }
