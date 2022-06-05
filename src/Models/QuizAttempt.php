@@ -127,9 +127,10 @@ class QuizAttempt extends Model
             return 0;
         }
         if (!empty($quizQuestion->negative_marks)) {
-            return $negative_marking_settings['negative_marking_type'] == 'fixed' ? $quizQuestion->negative_marks : ($quizQuestion->marks * ($quizQuestion->negative_marks / 100));
+            return $negative_marking_settings['negative_marking_type'] == 'fixed' ?
+                ($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) : ($quizQuestion->marks * (($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) / 100));
         } else {
-            return $negative_marking_settings['negative_marking_type'] == 'fixed' ? $negative_marking_settings['negative_mark_value'] : ($quizQuestion->marks * ($negative_marking_settings['negative_mark_value'] / 100));
+            return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
         }
     }
 }

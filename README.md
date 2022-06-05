@@ -14,20 +14,22 @@ You can install the package via composer:
 composer require harishdurga/laravel-quiz
 ```
 
-- Laravel Version: 8.X
+- Laravel Version: 9.X
 - PHP Version: 8.X
 
 ## Usage
 
 ### Class Diagram
-![LaravelQuiz](https://user-images.githubusercontent.com/10380630/126498504-6b0f3956-67c7-47f7-88b1-653b33f9dd77.jpg)
 
+![LaravelQuiz](https://user-images.githubusercontent.com/10380630/172040172-c6bc4783-98f1-4784-8b78-2060ee8e0936.jpg)
 
 ### Publish Vendor Files (config, mingrations,seeder)
 
 ```bash
 php artisan vendor:publish --provider="Harishdurga\LaravelQuiz\LaravelQuizServiceProvider"
 ```
+
+If you are updating the package, you may need to run the above command to publish the vendor files. But please take a backup of the config file. Also run the migration command to add new columns to the existing tables.
 
 ### Create Topic
 
@@ -66,6 +68,33 @@ Currently this package is configured to only handle the following type of questi
 ```php
 QuestionType::create(['question_type'=>'select_all']);
 ```
+
+### User Defined Methods To Evaluate The Answer For Each Question Type
+
+Though this package provides three question types you can easily change the method that is used to evaluate the answer. You can do this by updating the `get_score_for_question_type` property in config file.
+
+```php
+'get_score_for_question_type' => [
+        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
+        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',
+        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_3_question',
+        4 => 'Your custom method'
+    ]
+```
+
+But your method has needs to have the following signature
+
+```php
+/**
+     * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
+     */
+public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    {
+        // Your logic here
+    }
+```
+
+If you need to pass any data to your method then you can pass it as the last `$data` parameter. When you call the `caclculate_score()` method of `QuizAttempt` then you can pass the data as the parameter.
 
 ### Create Question
 
@@ -124,9 +153,18 @@ $quiz = Quiz::create([
             'valid_from' => now(),
             'valid_upto' => now()->addDay(5),
             'media_url'=>'',
-            'media_type'=>''
+            'media_type'=>'',
+            'negative_marking_settings'=>[
+                'enable_negative_marks' => true,
+                'negative_marking_type' => 'fixed',
+                'negative_mark_value' => 0,
+            ]
         ]);
 ```
+
+### Negative Marking Settings
+
+By default negative marking is enabled for backward compatibility. You can disable it by setting the `enable_negative_marks` to false. Two types of negative marking are supported(`negative_marking_type`). `fixed` and `percentage`. Negative marking value defined at question level will be given precedence over the value defined at quiz level. If you want to set the negative marking value at quiz level, set the `negative_mark_value` to the value you want to set. If you want to set the negative marking value at question level, set the `negative_marks` of `QuizQuestion` to your desired value. No need to give a negative number instead the negative marks or percentage should be given in positive.
 
 ### Add Question To Quiz
 
@@ -136,7 +174,7 @@ $quiz_question =  QuizQuestion::create([
             'question_id' => $question->id,
             'marks' => 3,
             'order' => 1,
-            'negative_marks'=>-1,
+            'negative_marks'=>1,
             'is_optional'=>false
         ]);
 ```
