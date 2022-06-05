@@ -156,7 +156,6 @@ class QuizTest extends TestCase
             'title' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0,
             'total_marks' => 10,
             'pass_marks' => 6,
             'max_attempts' => 1,
