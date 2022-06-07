@@ -47,20 +47,20 @@ If you are updating the package, you may need to run the above command to publis
 ### Create Topic
 
 ```php
-    $computer_science = Topic::create([
-        'topic' => 'Computer Science',
-        'slug' => 'computer-science',
-    ]);
+$computer_science = Topic::create([
+    'topic' => 'Computer Science',
+    'slug' => 'computer-science',
+]);
 ```
 
 #### Create Sub Topics
 
 ```php
-    $algorithms = Topic::create([
-            'topic' => 'Algorithms',
-            'slug' => 'algorithms'
-        ]);
-        $computer_science->children()->save($algorithms);
+$algorithms = Topic::create([
+    'topic' => 'Algorithms',
+    'slug' => 'algorithms'
+]);
+$computer_science->children()->save($algorithms);
 ```
 
 ### Question Types
@@ -88,23 +88,23 @@ Though this package provides three question types you can easily change the meth
 
 ```php
 'get_score_for_question_type' => [
-        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
-        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',
-        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_3_question',
-        4 => 'Your custom method'
-    ]
+    1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
+    2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',
+    3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_3_question',
+    4 => 'Your custom method'
+]
 ```
 
 But your method has needs to have the following signature
 
 ```php
 /**
-     * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
-     */
+ * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
+ */
 public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
-    {
-        // Your logic here
-    }
+{
+    // Your logic here
+}
 ```
 
 If you need to pass any data to your method then you can pass it as the last `$data` parameter. When you call the `caclculate_score()` method of `QuizAttempt` then you can pass the data as the parameter.
@@ -113,18 +113,24 @@ If you need to pass any data to your method then you can pass it as the last `$d
 
 ```php
 $question_one = Question::create([
-            'question' => 'What is an algorithm?',
-            'question_type_id' => 1,
-            'is_active' => true,
-            'media_url'=>'url',
-            'media_type'=>'image'
-        ]);
+    'question' => 'What is an algorithm?',
+    'question_type_id' => 1,
+    'is_active' => true,
+    'media_url'=>'url',
+    'media_type'=>'image'
+]);
 ```
 
-### Fecth Questions Of A Question Type
+### Fetch Questions Of A Question Type
 
 ```php
 $question_type->questions
+```
+
+### Fetch only questions with an option (valid question)
+
+```php
+Question::hasOptions()->get()
 ```
 
 ### Attach Topics To Question
@@ -155,24 +161,24 @@ $question->options
 
 ```php
 $quiz = Quiz::create([
-            'title' => 'Computer Sceince Quiz',
-            'description' => 'Test your knowledge of computer science',
-            'slug' => 'computer-science-quiz',
-            'time_between_attempts' => 0, //Time in seconds between each attempt
-            'total_marks' => 10,
-            'pass_marks' => 6,
-            'max_attempts' => 1,
-            'is_published' => 1,
-            'valid_from' => now(),
-            'valid_upto' => now()->addDay(5),
-            'media_url'=>'',
-            'media_type'=>'',
-            'negative_marking_settings'=>[
-                'enable_negative_marks' => true,
-                'negative_marking_type' => 'fixed',
-                'negative_mark_value' => 0,
-            ]
-        ]);
+    'title' => 'Computer Sceince Quiz',
+    'description' => 'Test your knowledge of computer science',
+    'slug' => 'computer-science-quiz',
+    'time_between_attempts' => 0, //Time in seconds between each attempt
+    'total_marks' => 10,
+    'pass_marks' => 6,
+    'max_attempts' => 1,
+    'is_published' => 1,
+    'valid_from' => now(),
+    'valid_upto' => now()->addDay(5),
+    'media_url'=>'',
+    'media_type'=>'',
+    'negative_marking_settings'=>[
+        'enable_negative_marks' => true,
+        'negative_marking_type' => 'fixed',
+        'negative_mark_value' => 0,
+    ]
+]);
 ```
 
 ### Negative Marking Settings
@@ -183,13 +189,13 @@ By default negative marking is enabled for backward compatibility. You can disab
 
 ```php
 $quiz_question =  QuizQuestion::create([
-            'quiz_id' => $quiz->id,
-            'question_id' => $question->id,
-            'marks' => 3,
-            'order' => 1,
-            'negative_marks'=>1,
-            'is_optional'=>false
-        ]);
+    'quiz_id' => $quiz->id,
+    'question_id' => $question->id,
+    'marks' => 3,
+    'order' => 1,
+    'negative_marks'=>1,
+    'is_optional'=>false
+]);
 ```
 
 ### Fetch Quiz Questions
@@ -202,10 +208,10 @@ $quiz->questions
 
 ```php
 $quiz_attempt = QuizAttempt::create([
-            'quiz_id' => $quiz->id,
-            'participant_id' => $participant->id,
-            'participant_type' => get_class($participant)
-        ]);
+    'quiz_id' => $quiz->id,
+    'participant_id' => $participant->id,
+    'participant_type' => get_class($participant)
+]);
 ```
 
 ### Get the Quiz Attempt Participant
@@ -220,12 +226,12 @@ $quiz_attempt->participant
 
 ```php
 QuizAttemptAnswer::create(
-            [
-                'quiz_attempt_id' => $quiz_attempt->id,
-                'quiz_question_id' => $quiz_question->id,
-                'question_option_id' => $question_option->id,
-            ]
-        );
+    [
+        'quiz_attempt_id' => $quiz_attempt->id,
+        'quiz_question_id' => $quiz_question->id,
+        'question_option_id' => $question_option->id,
+    ]
+);
 ```
 
 A `QuizAttemptAnswer` belongs to `QuizAttempt`,`QuizQuestion` and `QuestionOption`
@@ -248,9 +254,9 @@ Return a collection of `QuestionOption`.
 
 ```php
 public function correct_options(): Collection
-    {
-        return $this->options()->where('is_correct', 1)->get();
-    }
+{
+    return $this->options()->where('is_correct', 1)->get();
+}
 ```
 
 Please refer unit and features tests for more understanding.
