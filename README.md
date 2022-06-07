@@ -1,3 +1,5 @@
+![Laravel Quiz](https://user-images.githubusercontent.com/10380630/172400217-b9192a50-3227-4d30-8e00-7a301fe68ddc.png)
+
 # Laravel Quiz
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/harishdurga/laravel-quiz.svg?style=flat-square)](https://packagist.org/packages/harishdurga/laravel-quiz)
@@ -5,6 +7,15 @@
 ![GitHub Actions](https://github.com/harishdurga/laravel-quiz/actions/workflows/main.yml/badge.svg)
 
 With this package you can easily get quiz functionality into your Laravel project.
+
+## Features
+
+- Add Topics to Questions, Quizzes and to other Topics
+- Supported Question Types: Multiple Choice,Single Choice, and Fill In The Blank
+- Add your own Question Types and define your own methods to handle them
+- Flexible Negative Marking Settings
+- Flexible Quiz with most of the useful settings (Ex: Total marks, Pass marks, Negative Marking, Duration, Valid between date, Description etc)
+- Generate Random Quizzes (In progress)
 
 ## Installation
 
