@@ -1,4 +1,4 @@
-![Laravel Quiz](https://user-images.githubusercontent.com/10380630/172395768-968e3b09-a286-4643-943d-fb55a34e0095.png)
+![Laravel Quiz](https://user-images.githubusercontent.com/10380630/172400217-b9192a50-3227-4d30-8e00-7a301fe68ddc.png)
 
 # Laravel Quiz
 
