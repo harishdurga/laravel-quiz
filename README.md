@@ -1,6 +1,7 @@
+![Laravel Quiz](https://user-images.githubusercontent.com/10380630/172395768-968e3b09-a286-4643-943d-fb55a34e0095.png)
+
 # Laravel Quiz
 
-![Laravel Quiz](https://user-images.githubusercontent.com/10380630/172395768-968e3b09-a286-4643-943d-fb55a34e0095.png)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/harishdurga/laravel-quiz.svg?style=flat-square)](https://packagist.org/packages/harishdurga/laravel-quiz)
 [![Total Downloads](https://img.shields.io/packagist/dt/harishdurga/laravel-quiz.svg?style=flat-square)](https://packagist.org/packages/harishdurga/laravel-quiz)
 ![GitHub Actions](https://github.com/harishdurga/laravel-quiz/actions/workflows/main.yml/badge.svg)
