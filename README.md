@@ -15,6 +15,8 @@ With this package you can easily get quiz functionality into your Laravel projec
 - Add your own Question Types and define your own methods to handle them
 - Flexible Negative Marking Settings
 - Flexible Quiz with most of the useful settings (Ex: Total marks, Pass marks, Negative Marking, Duration, Valid between date, Description etc)
+- Any type of User of your application can be a Participant of a Quiz
+- Any type of User of your application can be an Author For a Quiz (In progress)
 - Generate Random Quizzes (In progress)
 
 ## Installation
