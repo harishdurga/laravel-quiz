@@ -17,7 +17,7 @@ class Question extends Model
      *
      * @var array
      */
-    protected $gaurded = ['id'];
+    protected $guarded = ['id'];
 
     public function getTable()
     {
@@ -52,5 +52,16 @@ class Question extends Model
     public function correct_options(): Collection
     {
         return $this->options()->where('is_correct', 1)->get();
+    }
+
+    /**
+     * Scope a query to only include question with options.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHasOptions($query)
+    {
+        return $query->has('options', '>', 0);
     }
 }
