@@ -36,14 +36,23 @@ class Quiz extends Model
         return config('laravel-quiz.table_names.quizzes');
     }
 
+    /**
+     * Backward compatibility of the attribute
+     *
+     * @param  string  $value
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function title(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value, $attributes) => $attributes['name'],
+            set: fn ($value) => ['name' => $value],
+        );
+    }
+
     public function topics()
     {
         return $this->morphToMany(Topic::class, 'topicable');
-    }
-
-    public static function newFactory()
-    {
-        return QuizFactory::new();
     }
 
     public function questions()
@@ -54,6 +63,11 @@ class Quiz extends Model
     public function attempts()
     {
         return $this->hasMany(QuizAttempt::class);
+    }
+
+    public static function newFactory()
+    {
+        return QuizFactory::new();
     }
 
     /**

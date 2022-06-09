@@ -3,6 +3,7 @@
 namespace Harishdurga\LaravelQuiz\Models;
 
 use Harishdurga\LaravelQuiz\Database\Factories\QuestionFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,9 +25,18 @@ class Question extends Model
         return config('laravel-quiz.table_names.questions');
     }
 
-    protected static function newFactory()
+    /**
+     * Backward compatibility of the attribute
+     *
+     * @param  string  $value
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function question(): Attribute
     {
-        return QuestionFactory::new();
+        return new Attribute(
+            get: fn ($value, $attributes) => $attributes['name'],
+            set: fn ($value) => ['name' => $value],
+        );
     }
 
     public function question_type()
@@ -47,6 +57,11 @@ class Question extends Model
     public function quiz_questions()
     {
         return $this->hasMany(QuizQuestion::class);
+    }
+
+    protected static function newFactory()
+    {
+        return QuestionFactory::new();
     }
 
     public function correct_options(): Collection
