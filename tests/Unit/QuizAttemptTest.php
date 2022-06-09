@@ -28,85 +28,85 @@ class QuizAttemptTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
         if ($questionType == 1) {
             $question = Question::factory()->create([
-                'question' => 'How many layers in OSI model?',
+                'name' => 'How many layers in OSI model?',
                 'question_type_id' => 1,
                 'is_active' => false,
             ]);
             $question_option_one = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => '5',
+                'name' => '5',
                 'is_correct' => false,
             ]);
             $question_option_two = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => '8',
+                'name' => '8',
                 'is_correct' => false,
             ]);
             $question_option_three = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => '10',
+                'name' => '10',
                 'is_correct' => false,
             ]);
             $question_option_four = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => '7',
+                'name' => '7',
                 'is_correct' => true,
             ]);
             $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
         } elseif ($questionType == 2) {
             $question = Question::factory()->create([
-                'question' => 'Which of the below is a data structure?',
+                'name' => 'Which of the below is a data structure?',
                 'question_type_id' => 2,
                 'is_active' => true,
             ]);
             $question_option_one = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => 'array',
+                'name' => 'array',
                 'is_correct' => true,
             ]);
             $question_option_two = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => 'object',
+                'name' => 'object',
                 'is_correct' => true,
             ]);
             $question_option_three = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => 'for loop',
+                'name' => 'for loop',
                 'is_correct' => false,
             ]);
             $question_option_four = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => 'method',
+                'name' => 'method',
                 'is_correct' => false,
             ]);
             $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
         } else {
             $question = Question::factory()->create([
-                'question' => 'Full Form Of CPU',
+                'name' => 'Full Form Of CPU',
                 'question_type_id' => 3,
                 'is_active' => true,
             ]);
             $question_option_one = QuestionOption::factory()->create([
                 'question_id' => $question->id,
-                'option' => 'central processing unit',
+                'name' => 'central processing unit',
                 'is_correct' => true,
             ]);
             $options = [$question_option_one];
         }
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
             'negative_marking_settings' => [
                 'enable_negative_marks' => $enableNegativeMarks,
@@ -433,13 +433,13 @@ class QuizAttemptTest extends TestCase
             ]
         ];
         $question = Question::factory()->create([
-            'question' => 'Full Form Of CPU',
+            'name' => 'Full Form Of CPU',
             'question_type_id' => 3,
             'is_active' => true,
         ]);
         foreach ($testCases as $key => $testCase) {
             $quiz = Quiz::factory()->make()->create([
-                'title' => 'Sample Quiz',
+                'name' => 'Sample Quiz',
                 'slug' => 'sample-quiz-' . $key,
                 'negative_marking_settings' => [
                     'enable_negative_marks' => $testCase['enable_negative_marks'],

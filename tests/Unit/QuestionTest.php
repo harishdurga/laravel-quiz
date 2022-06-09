@@ -24,7 +24,7 @@ class QuestionTest extends TestCase
     function question_question_type_relation()
     {
         $questionType = QuestionType::factory()->create([
-            'question_type' => 'fill_the_blank'
+            'name' => 'fill_the_blank'
         ]);
         $questionType->questions()->saveMany([
             Question::factory()->make(),

@@ -13,7 +13,7 @@ class QuestionOptionFactory extends Factory
     {
         return [
             'question_id' => null,
-            'option' => $this->faker->word,
+            'name' => $this->faker->word,
             'media_url' => $this->faker->url,
             'is_correct' => $this->faker->numberBetween(0, 1),
             'media_type' => 'image',

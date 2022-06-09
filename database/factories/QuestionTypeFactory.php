@@ -13,7 +13,7 @@ class QuestionTypeFactory extends Factory
     public function definition()
     {
         return [
-            'question_type' => $this->faker->words(1, true)
+            'name' => $this->faker->words(1, true)
         ];
     }
 }

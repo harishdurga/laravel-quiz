@@ -21,26 +21,26 @@ class QuizTest extends TestCase
     function quiz()
     {
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
         ]);
         $this->assertEquals(1, Quiz::count());
-        $this->assertEquals('Sample Quiz', Quiz::find($quiz->id)->title);
+        $this->assertEquals('Sample Quiz', Quiz::find($quiz->id)->name);
     }
 
     /** @test */
     function quiz_topics_relation()
     {
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
         ]);
         $topic_one = Topic::factory()->make()->create([
-            'topic' => 'Topic One',
+            'name' => 'Topic One',
             'slug' => 'topic-one',
         ]);
         $topic_two = Topic::factory()->make()->create([
-            'topic' => 'Topic Two',
+            'name' => 'Topic Two',
             'slug' => 'topic-two',
         ]);
         $quiz->topics()->attach([$topic_one->id, $topic_two->id]);
@@ -51,7 +51,7 @@ class QuizTest extends TestCase
     function quiz_questions_relation()
     {
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
         ]);
         $question_one = Question::factory()->create();
@@ -77,7 +77,7 @@ class QuizTest extends TestCase
             ['name' => "John Doe"]
         );
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
         ]);
         $question_one = Question::factory()->create();
@@ -121,7 +121,7 @@ class QuizTest extends TestCase
             ['name' => "John Doe"]
         );
         $quiz = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
         ]);
         $question_one = Question::factory()->create();
@@ -177,7 +177,7 @@ class QuizTest extends TestCase
     function quiz_check_negative_marking_settings()
     {
         $quizOne = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz',
             'negative_marking_settings' => [
                 'enable_negative_marks' => false,
@@ -187,7 +187,7 @@ class QuizTest extends TestCase
         ]);
         $this->assertEquals(false, $quizOne->negative_marking_settings['enable_negative_marks']);
         $quizTwo = Quiz::create([
-            'title' => "Sample Quiz",
+            'name' => "Sample Quiz",
             'slug' => "sample-quiz-two",
             'description' => "",
             'media_url' => null,
@@ -195,7 +195,6 @@ class QuizTest extends TestCase
             'pass_marks' => 0,
             'max_attempts' => 0,
             'is_published' => 1,
-            'media_url' => null,
             'media_type' => 'image',
             'duration' => 0,
             'valid_from' => date('Y-m-d H:i:s'),
@@ -204,7 +203,7 @@ class QuizTest extends TestCase
         $quizTwo = Quiz::find($quizTwo->id);
         $this->assertEquals(true, $quizTwo->negative_marking_settings['enable_negative_marks']);
         $quizThree = Quiz::factory()->make()->create([
-            'title' => 'Sample Quiz',
+            'name' => 'Sample Quiz',
             'slug' => 'sample-quiz-3',
             'negative_marking_settings' => [
                 'enable_negative_marks' => true,

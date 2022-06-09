@@ -22,19 +22,19 @@ class QuizTest extends TestCase
     function quiz_multiple_choice_single_answer_all_correct_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -46,41 +46,41 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'What is an algorithm?',
+            'name' => 'What is an algorithm?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A computer program that solves a problem.',
+            'name' => 'A computer program that solves a problem.',
             'is_correct' => false,
         ]);
         $question_one_option_two = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of rules that define the behavior of a computer program.',
+            'name' => 'A set of rules that define the behavior of a computer program.',
             'is_correct' => false,
         ]);
         $question_one_option_three = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of instructions that tell a computer what to do.',
+            'name' => 'A set of instructions that tell a computer what to do.',
             'is_correct' => true,
         ]);
         $question_one_option_four = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'None of the above.',
+            'name' => 'None of the above.',
             'is_correct' => false,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -89,29 +89,29 @@ class QuizTest extends TestCase
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'if',
+            'name' => 'if',
             'is_correct' => false,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'for loop',
+            'name' => 'for loop',
             'is_correct' => false,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -120,29 +120,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -153,7 +153,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -234,19 +234,19 @@ class QuizTest extends TestCase
     function quiz_multiple_choice_single_answer_few_worng_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -258,41 +258,41 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'What is an algorithm?',
+            'name' => 'What is an algorithm?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A computer program that solves a problem.',
+            'name' => 'A computer program that solves a problem.',
             'is_correct' => false,
         ]);
         $question_one_option_two = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of rules that define the behavior of a computer program.',
+            'name' => 'A set of rules that define the behavior of a computer program.',
             'is_correct' => false,
         ]);
         $question_one_option_three = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of instructions that tell a computer what to do.',
+            'name' => 'A set of instructions that tell a computer what to do.',
             'is_correct' => true,
         ]);
         $question_one_option_four = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'None of the above.',
+            'name' => 'None of the above.',
             'is_correct' => false,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -301,29 +301,29 @@ class QuizTest extends TestCase
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'if',
+            'name' => 'if',
             'is_correct' => false,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'for loop',
+            'name' => 'for loop',
             'is_correct' => false,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -332,29 +332,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -365,7 +365,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -447,19 +447,19 @@ class QuizTest extends TestCase
     function quiz_multiple_choice_multiple_answer_all_correct_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -471,41 +471,41 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'What is an algorithm?',
+            'name' => 'What is an algorithm?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A computer program that solves a problem.',
+            'name' => 'A computer program that solves a problem.',
             'is_correct' => false,
         ]);
         $question_one_option_two = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of rules that define the behavior of a computer program.',
+            'name' => 'A set of rules that define the behavior of a computer program.',
             'is_correct' => false,
         ]);
         $question_one_option_three = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of instructions that tell a computer what to do.',
+            'name' => 'A set of instructions that tell a computer what to do.',
             'is_correct' => true,
         ]);
         $question_one_option_four = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'None of the above.',
+            'name' => 'None of the above.',
             'is_correct' => false,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -514,29 +514,29 @@ class QuizTest extends TestCase
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'string',
+            'name' => 'string',
             'is_correct' => true,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'object',
+            'name' => 'object',
             'is_correct' => true,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -545,29 +545,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -578,7 +578,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -671,19 +671,19 @@ class QuizTest extends TestCase
     function quiz_multiple_choice_multiple_answer_all_few_wrong_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -695,41 +695,41 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'What is an algorithm?',
+            'name' => 'What is an algorithm?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A computer program that solves a problem.',
+            'name' => 'A computer program that solves a problem.',
             'is_correct' => false,
         ]);
         $question_one_option_two = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of rules that define the behavior of a computer program.',
+            'name' => 'A set of rules that define the behavior of a computer program.',
             'is_correct' => false,
         ]);
         $question_one_option_three = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'A set of instructions that tell a computer what to do.',
+            'name' => 'A set of instructions that tell a computer what to do.',
             'is_correct' => true,
         ]);
         $question_one_option_four = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'None of the above.',
+            'name' => 'None of the above.',
             'is_correct' => false,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -738,29 +738,29 @@ class QuizTest extends TestCase
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 2,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'string',
+            'name' => 'string',
             'is_correct' => true,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'object',
+            'name' => 'object',
             'is_correct' => true,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -769,29 +769,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -802,7 +802,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -896,19 +896,19 @@ class QuizTest extends TestCase
     function quiz_fill_the_blank_all_correct_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -920,26 +920,26 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'Full Form Of CPU',
+            'name' => 'Full Form Of CPU',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'central processing unit',
+            'name' => 'central processing unit',
             'is_correct' => true,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -948,29 +948,29 @@ class QuizTest extends TestCase
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'if',
+            'name' => 'if',
             'is_correct' => false,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'for loop',
+            'name' => 'for loop',
             'is_correct' => false,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -979,29 +979,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -1011,7 +1011,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -1093,19 +1093,19 @@ class QuizTest extends TestCase
     function quiz_fill_the_blank_few_wrong_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -1117,26 +1117,26 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'Full Form Of CPU',
+            'name' => 'Full Form Of CPU',
             'question_type_id' => 3,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'central processing unit',
+            'name' => 'central processing unit',
             'is_correct' => true,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
@@ -1145,29 +1145,29 @@ class QuizTest extends TestCase
 
         //Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 1,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'if',
+            'name' => 'if',
             'is_correct' => false,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'for loop',
+            'name' => 'for loop',
             'is_correct' => false,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
@@ -1176,29 +1176,29 @@ class QuizTest extends TestCase
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
@@ -1208,7 +1208,7 @@ class QuizTest extends TestCase
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
@@ -1290,19 +1290,19 @@ class QuizTest extends TestCase
     function quiz_multi_user_attempts_multi_question_types_few_wrong_answers()
     {
         $computer_science = Topic::factory()->create([
-            'topic' => 'Computer Science',
+            'name' => 'Computer Science',
             'slug' => 'computer-science',
         ]);
         $algorithms = Topic::factory()->create([
-            'topic' => 'Algorithms',
+            'name' => 'Algorithms',
             'slug' => 'algorithms'
         ]);
         $data_structures = Topic::factory()->create([
-            'topic' => 'Data Structures',
+            'name' => 'Data Structures',
             'slug' => 'data-structures'
         ]);
         $computer_networks = Topic::factory()->create([
-            'topic' => 'Computer Networks',
+            'name' => 'Computer Networks',
             'slug' => 'computer-networks'
         ]);
         $computer_science->children()->save($algorithms);
@@ -1313,91 +1313,91 @@ class QuizTest extends TestCase
         QuestionType::insert(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
 
         // Question One And Options
         $question_one = Question::factory()->create([
-            'question' => 'Full Form Of CPU',
+            'name' => 'Full Form Of CPU',
             'question_type_id' => 3,
             'is_active' => true,
         ]);
         $question_one_option_one = QuestionOption::factory()->create([
             'question_id' => $question_one->id,
-            'option' => 'central processing unit',
+            'name' => 'central processing unit',
             'is_correct' => true,
         ]);
         $question_one->topics()->attach([$computer_science->id, $algorithms->id]);
 
         // Question Two And Options
         $question_two = Question::factory()->create([
-            'question' => 'Which of the below is a data structure?',
+            'name' => 'Which of the below is a data structure?',
             'question_type_id' => 2,
             'is_active' => true,
         ]);
 
         $question_two_option_one = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
         ]);
         $question_two_option_two = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'object',
+            'name' => 'object',
             'is_correct' => true,
         ]);
         $question_two_option_three = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'for loop',
+            'name' => 'for loop',
             'is_correct' => false,
         ]);
         $question_two_option_four = QuestionOption::factory()->create([
             'question_id' => $question_two->id,
-            'option' => 'method',
+            'name' => 'method',
             'is_correct' => false,
         ]);
         $question_two->topics()->attach([$computer_science->id, $data_structures->id]);
 
         // Question Three And Options
         $question_three = Question::factory()->create([
-            'question' => 'How many layers in OSI model?',
+            'name' => 'How many layers in OSI model?',
             'question_type_id' => 1,
             'is_active' => false,
         ]);
 
         $question_three_option_one = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '5',
+            'name' => '5',
             'is_correct' => false,
         ]);
         $question_three_option_two = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '8',
+            'name' => '8',
             'is_correct' => false,
         ]);
         $question_three_option_three = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '10',
+            'name' => '10',
             'is_correct' => false,
         ]);
         $question_three_option_four = QuestionOption::factory()->create([
             'question_id' => $question_three->id,
-            'option' => '7',
+            'name' => '7',
             'is_correct' => true,
         ]);
         $question_three->topics()->attach([$computer_science->id, $computer_networks->id]);
 
         // Quiz
         $quiz = Quiz::factory()->create([
-            'title' => 'Computer Sceince Quiz',
+            'name' => 'Computer Sceince Quiz',
             'description' => 'Test your knowledge of computer science',
             'slug' => 'computer-science-quiz',
             'total_marks' => 10,
