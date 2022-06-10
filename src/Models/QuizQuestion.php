@@ -23,11 +23,6 @@ class QuizQuestion extends Model
         return config('laravel-quiz.table_names.quiz_questions');
     }
 
-    protected static function newFactory()
-    {
-        return new QuizQuestionFactory();
-    }
-
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
@@ -41,5 +36,10 @@ class QuizQuestion extends Model
     public function answers()
     {
         return $this->hasMany(QuizAttemptAnswer::class);
+    }
+
+    protected static function newFactory()
+    {
+        return new QuizQuestionFactory();
     }
 }

@@ -12,10 +12,10 @@ class TopicFactory extends Factory
 
     public function definition()
     {
-        $topic = $this->faker->words(4, true);
+        $name = $this->faker->words(4, true);
         return [
-            'topic' => $topic,
-            'slug' => Str::slug($topic, '-'),
+            'name' => $name,
+            'slug' => Str::slug($name, '-'),
             'parent_id' => null,
             'is_active' => $this->faker->numberBetween(0, 1)
         ];

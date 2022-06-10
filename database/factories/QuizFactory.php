@@ -12,11 +12,11 @@ class QuizFactory extends Factory
 
     public function definition()
     {
-        $title = $this->faker->title;
+        $name = $this->faker->name;
 
         return [
-            'title' => $title,
-            'slug' => Str::slug($title),
+            'name' => $name,
+            'slug' => Str::slug($name),
             'description' => $this->faker->paragraph,
             'total_marks' => 0,
             'pass_marks' => 0,

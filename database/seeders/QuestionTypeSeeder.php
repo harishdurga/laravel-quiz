@@ -17,13 +17,13 @@ class QuestionTypeSeeder extends Seeder
         QuestionType::create(
             [
                 [
-                    'question_type' => 'multiple_choice_single_answer',
+                    'name' => 'multiple_choice_single_answer',
                 ],
                 [
-                    'question_type' => 'multiple_choice_multiple_answer',
+                    'name' => 'multiple_choice_multiple_answer',
                 ],
                 [
-                    'question_type' => 'fill_the_blank',
+                    'name' => 'fill_the_blank',
                 ]
             ]
         );
