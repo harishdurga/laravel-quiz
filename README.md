@@ -204,7 +204,7 @@ QuizAuthor::create([
 $quiz->quizAuthors->first()->author; //Original User
 ```
 
-You can give any author role you want and implement ACL as per your usecase.
+Add `CanAuthorQuiz` trait to your model and you can get all the quizzes associated by calling the `quizzes` relation. You can give any author role you want and implement ACL as per your usecase.
 
 ### Add Question To Quiz
 
