@@ -20,6 +20,17 @@ class Question extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function getTable()
     {
         return config('laravel-quiz.table_names.questions');
@@ -41,22 +52,22 @@ class Question extends Model
 
     public function question_type()
     {
-        return $this->belongsTo(QuestionType::class);
+        return $this->belongsTo(config('laravel-quiz.models.question_type'));
     }
 
     public function topics()
     {
-        return $this->morphToMany(Topic::class, 'topicable');
+        return $this->morphToMany(config('laravel-quiz.models.topic'), 'topicable');
     }
 
     public function options()
     {
-        return $this->hasMany(QuestionOption::class);
+        return $this->hasMany(config('laravel-quiz.models.question_option'));
     }
 
     public function quiz_questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_question'));
     }
 
     protected static function newFactory()

@@ -8,6 +8,6 @@ trait QuizParticipant
 {
     public function quiz_attempts()
     {
-        return $this->morphMany(QuizAttempt::class, 'participant');
+        return $this->morphMany(config('laravel-quiz.models.quiz_attempt'), 'participant');
     }
 }
