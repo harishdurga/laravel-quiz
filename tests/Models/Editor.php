@@ -3,12 +3,13 @@
 namespace Harishdurga\LaravelQuiz\Tests\Models;
 
 use Harishdurga\LaravelQuiz\Traits\CanAuthorQuiz;
-use Harishdurga\LaravelQuiz\Traits\QuizParticipant;
 use Illuminate\Database\Eloquent\Model;
 
-class Author extends Model
+
+class Editor extends Model
 {
-    use QuizParticipant, CanAuthorQuiz;
+    use CanAuthorQuiz;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -16,5 +17,5 @@ class Author extends Model
      */
     protected $guarded = ['id'];
 
-    protected $table = 'authors';
+    protected $table = 'editors';
 }
