@@ -75,6 +75,12 @@ return [
          * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
          */
 
+        'quiz_author' => Harishdurga\LaravelQuiz\Models\QuizAuthor::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
         'quiz_question' => Harishdurga\LaravelQuiz\Models\QuizQuestion::class,
 
         /*

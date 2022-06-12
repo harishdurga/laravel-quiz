@@ -99,6 +99,6 @@ class Quiz extends Model
 
     public function quizAuthors()
     {
-        return $this->hasMany(QuizAuthor::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_author'));
     }
 }
