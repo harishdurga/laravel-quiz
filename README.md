@@ -16,7 +16,7 @@ With this package you can easily get quiz functionality into your Laravel projec
 - Flexible Negative Marking Settings
 - Flexible Quiz with most of the useful settings (Ex: Total marks, Pass marks, Negative Marking, Duration, Valid between date, Description etc)
 - Any type of User of your application can be a Participant of a Quiz
-- Any type of User of your application can be an Author For a Quiz (In progress)
+- Any type of User, and any number of Users of your application can be Authors (different roles) For a Quiz
 - Generate Random Quizzes (In progress)
 
 ## Installation
@@ -34,7 +34,7 @@ composer require harishdurga/laravel-quiz
 
 ### Class Diagram
 
-![LaravelQuiz](https://user-images.githubusercontent.com/10380630/172040172-c6bc4783-98f1-4784-8b78-2060ee8e0936.jpg)
+![LaravelQuiz](https://user-images.githubusercontent.com/10380630/173225090-8dc96205-1a08-4ed2-8954-1a53bccc7359.png)
 
 ### Publish Vendor Files (config, mingrations,seeder)
 
@@ -184,6 +184,27 @@ $quiz = Quiz::create([
 ### Negative Marking Settings
 
 By default negative marking is enabled for backward compatibility. You can disable it by setting the `enable_negative_marks` to false. Two types of negative marking are supported(`negative_marking_type`). `fixed` and `percentage`. Negative marking value defined at question level will be given precedence over the value defined at quiz level. If you want to set the negative marking value at quiz level, set the `negative_mark_value` to the value you want to set. If you want to set the negative marking value at question level, set the `negative_marks` of `QuizQuestion` to your desired value. No need to give a negative number instead the negative marks or percentage should be given in positive.
+
+### Adding An Author(s) To A Quiz
+
+```php
+$admin = Author::create(
+            ['name' => "John Doe"]
+        );
+$quiz = Quiz::factory()->make()->create([
+            'name' => 'Sample Quiz',
+            'slug' => 'sample-quiz'
+        ]);
+QuizAuthor::create([
+            'quiz_id' => $quiz->id,
+            'author_id' => $admin->id,
+            'author_type' => get_class($admin),
+            'author_role' => 'admin',
+        ]);
+$quiz->quizAuthors->first()->author; //Original User
+```
+
+Add `CanAuthorQuiz` trait to your model and you can get all the quizzes associated by calling the `quizzes` relation. You can give any author role you want and implement ACL as per your usecase.
 
 ### Add Question To Quiz
 

@@ -17,5 +17,10 @@ class CreateAuthorsTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+        Schema::create('editors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
     }
 }

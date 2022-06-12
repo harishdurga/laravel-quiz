@@ -85,4 +85,9 @@ class Quiz extends Model
             ] : json_decode($value, true),
         );
     }
+
+    public function quizAuthors()
+    {
+        return $this->hasMany(QuizAuthor::class);
+    }
 }
