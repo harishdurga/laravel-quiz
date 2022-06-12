@@ -55,5 +55,6 @@ class QuizAuthorTest extends TestCase
         $this->assertEquals(2, $quiEditors->count());
         $this->assertEquals($editor_one->id, $quiEditors->first()->author->id);
         $this->assertEquals(get_class($editor_one), get_class($quiEditors->first()->author));
+        $this->assertEquals(1, $editor_one->quizzes->count());
     }
 }

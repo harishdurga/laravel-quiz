@@ -2,7 +2,8 @@
 
 namespace Harishdurga\LaravelQuiz\Traits;
 
-use App\Models\QuizAuthor;
+use Harishdurga\LaravelQuiz\Models\QuizAuthor;
+
 
 trait CanAuthorQuiz
 {
