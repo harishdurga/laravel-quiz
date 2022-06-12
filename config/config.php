@@ -21,6 +21,7 @@ return [
         'quiz_questions' => 'quiz_questions',
         'quiz_attempts' => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
+        'quiz_authors' => 'quiz_authors'
     ],
 
     /*
