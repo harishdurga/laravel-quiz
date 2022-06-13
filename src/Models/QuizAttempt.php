@@ -20,17 +20,25 @@ class QuizAttempt extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function getTable()
     {
         return config('laravel-quiz.table_names.quiz_attempts');
     }
 
-    /**
-     * @return \Harishdurga\LaravelQuiz\Models\Quiz
-     */
     public function quiz()
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(config('laravel-quiz.models.quiz'));
     }
 
     public function participant()
@@ -40,7 +48,7 @@ class QuizAttempt extends Model
 
     public function answers()
     {
-        return $this->hasMany(QuizAttemptAnswer::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_attempt_answer'));
     }
 
     public function calculate_score($data = null): float
@@ -70,12 +78,10 @@ class QuizAttempt extends Model
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
                 return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
-            } else {
-                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
             }
-        } else {
-            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+            return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
+        return count($quizQuestionAnswers) ? (float) $quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     /**
@@ -94,12 +100,10 @@ class QuizAttempt extends Model
                     $temp_arr[] = $answer->question_option_id;
                 }
                 return $correct_answer->toArray() == $temp_arr ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
-            } else {
-                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
             }
-        } else {
-            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+            return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
+        return count($quizQuestionAnswers) ? (float) $quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     /**
@@ -114,12 +118,10 @@ class QuizAttempt extends Model
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
                 return  $quizQuestionAnswers[0]->answer == $correct_answer ? $quizQuestion->marks : - ($negative_marks); // Return marks in case of correct answer else negative marks
-            } else {
-                return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
             }
-        } else {
-            return count($quizQuestionAnswers) ? floatval($quizQuestion->marks) : 0; // Incase of no correct answer, if there is any answer then give full marks
+            return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
+        return count($quizQuestionAnswers) ? (float)$quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     public static function get_negative_marks_for_question(Quiz $quiz, QuizQuestion $quizQuestion): float
@@ -135,8 +137,7 @@ class QuizAttempt extends Model
         if (!empty($quizQuestion->negative_marks)) {
             return $negative_marking_settings['negative_marking_type'] == 'fixed' ?
                 ($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) : ($quizQuestion->marks * (($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) / 100));
-        } else {
-            return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
         }
+        return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
 }

@@ -20,6 +20,17 @@ class Quiz extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array
@@ -52,17 +63,17 @@ class Quiz extends Model
 
     public function topics()
     {
-        return $this->morphToMany(Topic::class, 'topicable');
+        return $this->morphToMany(config('laravel-quiz.models.topic'), 'topicable');
     }
 
     public function questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_question'));
     }
 
     public function attempts()
     {
-        return $this->hasMany(QuizAttempt::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_attempt'));
     }
 
     public static function newFactory()
@@ -88,6 +99,6 @@ class Quiz extends Model
 
     public function quizAuthors()
     {
-        return $this->hasMany(QuizAuthor::class);
+        return $this->hasMany(config('laravel-quiz.models.quiz_author'));
     }
 }

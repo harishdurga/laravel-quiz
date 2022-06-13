@@ -26,6 +26,72 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Models Name
+    |--------------------------------------------------------------------------
+    |
+    | Allow to override Quiz table to extend code
+    |
+    */
+
+    'models' => [
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\Question::class
+         */
+
+        'question' => Harishdurga\LaravelQuiz\Models\Question::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\Question::class
+         */
+
+        'question_option' => Harishdurga\LaravelQuiz\Models\QuestionOption::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\Question::class
+         */
+
+        'question_type' => Harishdurga\LaravelQuiz\Models\QuestionType::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\Quiz::class
+         */
+
+        'quiz' => Harishdurga\LaravelQuiz\Models\Quiz::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
+        'quiz_attempt' => Harishdurga\LaravelQuiz\Models\QuizAttempt::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
+        'quiz_attempt_answer' => Harishdurga\LaravelQuiz\Models\QuizAttemptAnswer::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
+        'quiz_author' => Harishdurga\LaravelQuiz\Models\QuizAuthor::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
+        'quiz_question' => Harishdurga\LaravelQuiz\Models\QuizQuestion::class,
+
+        /*
+         * Default Harishdurga\LaravelQuiz\Models\QuizAttempt::class
+         */
+
+        'topic' => Harishdurga\LaravelQuiz\Models\Topic::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Question type mapping
     |--------------------------------------------------------------------------
     |

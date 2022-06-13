@@ -19,6 +19,17 @@ class QuestionType extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function getTable()
     {
         return config('laravel-quiz.table_names.question_types');
@@ -40,7 +51,7 @@ class QuestionType extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class);
+        return $this->hasMany(config('laravel-quiz.models.question'));
     }
 
     protected static function newFactory()
