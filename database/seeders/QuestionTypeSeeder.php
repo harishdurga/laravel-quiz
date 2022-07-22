@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Harishdurga\LaravelQuiz\Database\Seeders;
 
 use Harishdurga\LaravelQuiz\Models\QuestionType;
 use Illuminate\Database\Seeder;
@@ -14,18 +14,19 @@ class QuestionTypeSeeder extends Seeder
      */
     public function run()
     {
-        QuestionType::create(
+        $questionTypes = [
             [
-                [
-                    'name' => 'multiple_choice_single_answer',
-                ],
-                [
-                    'name' => 'multiple_choice_multiple_answer',
-                ],
-                [
-                    'name' => 'fill_the_blank',
-                ]
+                'name' => 'multiple_choice_single_answer',
+            ],
+            [
+                'name' => 'multiple_choice_multiple_answer',
+            ],
+            [
+                'name' => 'fill_the_blank',
             ]
-        );
+        ];
+        foreach ($questionTypes as $questionType) {
+            QuestionType::create($questionType);
+        }
     }
 }

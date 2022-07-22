@@ -5,9 +5,10 @@ namespace Harishdurga\LaravelQuiz\Tests\Unit;
 use Harishdurga\LaravelQuiz\Models\Topic;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
 use Harishdurga\LaravelQuiz\Models\Question;
-use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Harishdurga\LaravelQuiz\Models\QuestionType;
+use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Harishdurga\LaravelQuiz\Database\Seeders\QuestionTypeSeeder;
 
 class QuestionTest extends TestCase
 {
@@ -57,5 +58,12 @@ class QuestionTest extends TestCase
             ]),
         ]);
         $this->assertEquals(2, $question->options->count());
+    }
+
+    /** @test */
+    function testQuestionTypeSeeding()
+    {
+        $this->seed(QuestionTypeSeeder::class);
+        $this->assertDatabaseCount(config('laravel-quiz.table_names.question_types'), 3);
     }
 }
