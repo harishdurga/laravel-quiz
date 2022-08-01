@@ -68,7 +68,7 @@ $computer_science->children()->save($algorithms);
 A seeder class `QuestionTypeSeeder ` will be published into the `database/seeders` folder. Run the following command to seed question types.
 
 ```bash
-php artisan db:seed --class=QuestionTypeSeeder
+php artisan db:seed --class=\\Harishdurga\\LaravelQuiz\\Database\\Seeders\\QuestionTypeSeeder
 ```
 
 Currently this package is configured to only handle the following type of questions
