@@ -23,7 +23,7 @@ class CreateQuizzesTable extends Migration
         Schema::create($this->tableNames['topics'], function (Blueprint $table) {
             $table->id();
             $table->string('topic');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->foreignId('parent_id')->nullable()->constrained($this->tableNames['topics'])->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -75,7 +75,7 @@ class CreateQuizzesTable extends Migration
         Schema::create($this->tableNames['quizzes'], function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->float('total_marks')->default(0); //0 means no marks
             $table->float('pass_marks')->default(0); //0 means no pass marks
