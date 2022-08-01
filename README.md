@@ -48,7 +48,7 @@ If you are updating the package, you may need to run the above command to publis
 
 ```php
 $computer_science = Topic::create([
-    'topic' => 'Computer Science',
+    'name' => 'Computer Science',
     'slug' => 'computer-science',
 ]);
 ```
@@ -57,7 +57,7 @@ $computer_science = Topic::create([
 
 ```php
 $algorithms = Topic::create([
-    'topic' => 'Algorithms',
+    'name' => 'Algorithms',
     'slug' => 'algorithms'
 ]);
 $computer_science->children()->save($algorithms);
@@ -65,7 +65,7 @@ $computer_science->children()->save($algorithms);
 
 ### Question Types
 
-A seeder class `QuestionTypeSeeder ` will be publsihed into the `database/seeders` folder. Run the following command to seed question types.
+A seeder class `QuestionTypeSeeder ` will be published into the `database/seeders` folder. Run the following command to seed question types.
 
 ```bash
 php artisan db:seed --class=QuestionTypeSeeder
@@ -76,10 +76,11 @@ Currently this package is configured to only handle the following type of questi
 - `multiple_choice_single_answer`
 - `multiple_choice_multiple_answer`
 - `fill_the_blank`
-  Create a QuestionType:
+
+Create a QuestionType:
 
 ```php
-QuestionType::create(['question_type'=>'select_all']);
+QuestionType::create(['name'=>'select_all']);
 ```
 
 ### User Defined Methods To Evaluate The Answer For Each Question Type
@@ -113,7 +114,7 @@ If you need to pass any data to your method then you can pass it as the last `$d
 
 ```php
 $question_one = Question::create([
-    'question' => 'What is an algorithm?',
+    'name' => 'What is an algorithm?',
     'question_type_id' => 1,
     'is_active' => true,
     'media_url'=>'url',
@@ -144,7 +145,7 @@ $question->topics()->attach([$computer_science->id, $algorithms->id]);
 ```php
 $question_two_option_one = QuestionOption::create([
             'question_id' => $question_two->id,
-            'option' => 'array',
+            'name' => 'array',
             'is_correct' => true,
             'media_type'=>'image',
             'media_url'=>'media url'
@@ -161,7 +162,7 @@ $question->options
 
 ```php
 $quiz = Quiz::create([
-    'title' => 'Computer Sceince Quiz',
+    'name' => 'Computer Science Quiz',
     'description' => 'Test your knowledge of computer science',
     'slug' => 'computer-science-quiz',
     'time_between_attempts' => 0, //Time in seconds between each attempt
