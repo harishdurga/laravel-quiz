@@ -73,4 +73,9 @@ class Topic extends Model
     {
         return TopicFactory::new();
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
