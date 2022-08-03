@@ -101,4 +101,9 @@ class Quiz extends Model
     {
         return $this->hasMany(config('laravel-quiz.models.quiz_author'));
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
