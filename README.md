@@ -34,7 +34,7 @@ composer require harishdurga/laravel-quiz
 
 ### Class Diagram
 
-![LaravelQuiz](https://user-images.githubusercontent.com/10380630/173225090-8dc96205-1a08-4ed2-8954-1a53bccc7359.png)
+![LaravelQuiz](https://user-images.githubusercontent.com/10380630/182762726-de5d4b61-af3c-4d0f-b25d-dad986ff5b6e.jpg)
 
 ### Publish Vendor Files (config, mingrations,seeder)
 
@@ -181,6 +181,16 @@ $quiz = Quiz::create([
     ]
 ]);
 ```
+
+### Attach Topics To A Quiz
+
+```php
+$quiz->topics()->attach([$topic_one->id, $topic_two->id]);
+```
+
+### Topicable
+
+Topics can be attached to a quiz or a question. Questions can exist outside of the quiz context. For example you can create a question bank which you can filter based on the topics if attached.
 
 ### Negative Marking Settings
 
