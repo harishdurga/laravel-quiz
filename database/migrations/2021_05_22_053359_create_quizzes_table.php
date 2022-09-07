@@ -102,7 +102,6 @@ class CreateQuizzesTable extends Migration
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['quiz_id', 'question_id']);
         });
 
         // Quiz Attempts Table
