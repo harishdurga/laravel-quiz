@@ -141,15 +141,27 @@ class QuizAttempt extends Model
         return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
 
-    public function validate(int|null $quizQuestionId=null){
+    public function validate(int|null $quizQuestionId=null,$data = null){
         if ($quizQuestionId){
-            $quizQuestion = QuizQuestion::where(['quiz_id'=>$this->quiz_id,'id'=>$quizQuestionId])->with('question')->first();
+            $quizQuestion = QuizQuestion::with(['question','answers','question.correct_options'])->where(['quiz_id'=>$this->quiz_id,'id'=>$quizQuestionId])->first();
             if ($quizQuestion){
-
+               $isCorrect = true;
+               $actualQuestion = $quizQuestion->question;
+               $answers = $quizQuestion->answers;
+               $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$actualQuestion->question_type_id], [$this, $quizQuestion, $answers ?? [], $data]);
+               if ($score <= 0){
+                   $isCorrect = false;
+               }
+               return [
+                 'quiz_question'=>$quizQuestion,
+                 'question'=>$actualQuestion,
+                 'score' => $score,
+                 'responses' => $answers,
+                 'is_correct' => $isCorrect
+               ];
             }
-            return null;
-        }else{
-
+            return null; //QuizQuestion is empty
         }
+        return null;
     }
 }

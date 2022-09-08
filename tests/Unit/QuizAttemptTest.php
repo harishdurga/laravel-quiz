@@ -457,4 +457,21 @@ class QuizAttemptTest extends TestCase
             $this->assertEquals($testCase['expected_negative_marks'], QuizAttempt::get_negative_marks_for_question($quiz, $quizQuestion));
         }
     }
+
+    /** @test */
+    function get_quiz_attempt_result_of_single_question(){
+        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
+        [$question_option_one] = $options;
+
+        $quiz_attempt_answer_one =  QuizAttemptAnswer::create(
+            [
+                'quiz_attempt_id' => $quiz_attempt->id,
+                'quiz_question_id' => $quiz_question->id,
+                'question_option_id' => $question_option_one->id,
+                'answer' => 'central processing unit'
+            ]
+        );
+        print_r($quiz_attempt->validate($quiz_question->id));
+        $this->assertTrue(true);
+    }
 }
