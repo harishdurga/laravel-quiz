@@ -140,4 +140,16 @@ class QuizAttempt extends Model
         }
         return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
+
+    public function validate(int|null $quizQuestionId=null){
+        if ($quizQuestionId){
+            $quizQuestion = QuizQuestion::where(['quiz_id'=>$this->quiz_id,'id'=>$quizQuestionId])->with('question')->first();
+            if ($quizQuestion){
+
+            }
+            return null;
+        }else{
+
+        }
+    }
 }
