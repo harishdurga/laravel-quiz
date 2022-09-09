@@ -65,7 +65,8 @@ class QuizAttemptTest extends TestCase
                 'is_correct' => true,
             ]);
             $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
-        } elseif ($questionType == 2) {
+        }
+        elseif ($questionType == 2) {
             $question = Question::factory()->create([
                 'name' => 'Which of the below is a data structure?',
                 'question_type_id' => 2,
@@ -92,7 +93,8 @@ class QuizAttemptTest extends TestCase
                 'is_correct' => false,
             ]);
             $options = [$question_option_one, $question_option_two, $question_option_three, $question_option_four];
-        } else {
+        }
+        else {
             $question = Question::factory()->create([
                 'name' => 'Full Form Of CPU',
                 'question_type_id' => 3,
@@ -460,23 +462,22 @@ class QuizAttemptTest extends TestCase
 
     /** @test */
     function get_quiz_attempt_result_of_single_question(){
-        $testCases = [
-           [
-               'name' => 'Correct Answer'
-           ]
-        ];
-        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
-        [$question_option_one] = $options;
-
-        $quiz_attempt_answer_one =  QuizAttemptAnswer::create(
+        [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
+        [$question_option_one, $question_option_two, $question_option_three, $question_option_four] = $options;
+        //Quiz Attempt And Answers
+        $quiz_attempt = QuizAttempt::create([
+            'quiz_id' => $quiz->id,
+            'participant_id' => $user->id,
+            'participant_type' => get_class($user)
+        ]);
+        $quiz_attempt_answer = QuizAttemptAnswer::create(
             [
                 'quiz_attempt_id' => $quiz_attempt->id,
                 'quiz_question_id' => $quiz_question->id,
-                'question_option_id' => $question_option_one->id,
-                'answer' => 'central processing unit'
+                'question_option_id' => $question_option_four->id,
             ]
         );
         print_r(json_encode($quiz_attempt->validate($quiz_question->id)));
-        $this->assertEquals([1=>['score'=>5,'is_correct'=>true]],$quiz_attempt->validate($quiz_question->id));
+        $this->assertEquals([1=>['score'=>5,'is_correct'=>true,'correct_answer'=>'7','user_answer'=>7]],$quiz_attempt->validate($quiz_question->id));
     }
 }

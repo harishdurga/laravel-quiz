@@ -71,7 +71,7 @@ class QuizAttempt extends Model
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_1_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_1_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
@@ -89,7 +89,7 @@ class QuizAttempt extends Model
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_2_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_2_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
@@ -143,25 +143,29 @@ class QuizAttempt extends Model
         return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
 
-    private function validateQuizQuestion($quizQuestion,mixed $data=null): array
+    private function validateQuizQuestion(QuizQuestion $quizQuestion,mixed $data=null): array
     {
         $isCorrect = true;
         $actualQuestion = $quizQuestion->question;
         $answers = $quizQuestion->answers;
-        $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$actualQuestion->question_type_id], [$this, $quizQuestion, $answers ?? [], $data]);
+        $questionType = $actualQuestion->question_type;
+        $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$questionType->id], [$this, $quizQuestion, $answers ?? [], $data]);
         if ($score <= 0){
             $isCorrect = false;
         }
+        list($correctAnswer,$userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion);
         return [
             'score' => $score,
-            'is_correct' => $isCorrect
+            'is_correct' => $isCorrect,
+            'correct_answer' => $correctAnswer,
+            'user_answer' => $userAnswer
         ];
     }
 
     /**
      * @param int|null $quizQuestionId
      * @param $data mixed|null data to be passed to the user defined function to evaluate different question types
-     * @return array|null [1=>['score'=>10,'is_correct'=>true]]
+     * @return array|null [1=>['score'=>10,'is_correct'=>true,'correct_answer'=>'a','user_answer'=>'a']]
      */
     public function validate(int|null $quizQuestionId=null, mixed $data = null): array|null{
         if ($quizQuestionId){
@@ -180,5 +184,23 @@ class QuizAttempt extends Model
             $result[$quizQuestion->id] = $this->validateQuizQuestion($quizQuestion);
         }
         return $result;
+    }
+
+    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion){
+        /**
+         * @var Question $actualQuestion
+         */
+        $actualQuestion = $quizQuestion->question;
+        $answers = $quizQuestion->answers;
+        $questionOptions = $actualQuestion->options;
+        $correctAnswer = $actualQuestion->correct_options()->first()?->option;
+        $givenAnswer = $answers->first()?->question_option_id;
+        foreach ($questionOptions as $questionOption) {
+            if ($questionOption->id == $givenAnswer){
+                $givenAnswer = $questionOption->option;
+                break;
+            }
+        }
+        return [$correctAnswer,$givenAnswer];
     }
 }

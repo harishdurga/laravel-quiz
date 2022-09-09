@@ -12,6 +12,8 @@ class QuestionType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const MULTIPLE_CHOICE_SINGLE_ANSWER = 1,MULTIPLE_CHOICE_MULTI_ANSWER=2,FILL_IN_BLANK=3;
+
     /**
      * The attributes that aren't mass assignable.
      *
