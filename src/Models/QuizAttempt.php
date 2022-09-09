@@ -2,9 +2,11 @@
 
 namespace Harishdurga\LaravelQuiz\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mockery\Matcher\Any;
 
 /**
  * @property Quiz $quiz
@@ -109,7 +111,7 @@ class QuizAttempt extends Model
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
@@ -141,27 +143,42 @@ class QuizAttempt extends Model
         return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
 
-    public function validate(int|null $quizQuestionId=null,$data = null){
+    private function validateQuizQuestion($quizQuestion,mixed $data=null): array
+    {
+        $isCorrect = true;
+        $actualQuestion = $quizQuestion->question;
+        $answers = $quizQuestion->answers;
+        $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$actualQuestion->question_type_id], [$this, $quizQuestion, $answers ?? [], $data]);
+        if ($score <= 0){
+            $isCorrect = false;
+        }
+        return [
+            'score' => $score,
+            'is_correct' => $isCorrect
+        ];
+    }
+
+    /**
+     * @param int|null $quizQuestionId
+     * @param $data mixed|null data to be passed to the user defined function to evaluate different question types
+     * @return array|null [1=>['score'=>10,'is_correct'=>true]]
+     */
+    public function validate(int|null $quizQuestionId=null, mixed $data = null): array|null{
         if ($quizQuestionId){
-            $quizQuestion = QuizQuestion::with(['question','answers','question.correct_options'])->where(['quiz_id'=>$this->quiz_id,'id'=>$quizQuestionId])->first();
+            $quizQuestion = QuizQuestion::where(['quiz_id'=>$this->quiz_id,'id'=>$quizQuestionId])->first();
             if ($quizQuestion){
-               $isCorrect = true;
-               $actualQuestion = $quizQuestion->question;
-               $answers = $quizQuestion->answers;
-               $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$actualQuestion->question_type_id], [$this, $quizQuestion, $answers ?? [], $data]);
-               if ($score <= 0){
-                   $isCorrect = false;
-               }
-               return [
-                 'quiz_question'=>$quizQuestion,
-                 'question'=>$actualQuestion,
-                 'score' => $score,
-                 'responses' => $answers,
-                 'is_correct' => $isCorrect
-               ];
+               return [$quizQuestionId => $this->validateQuizQuestion($quizQuestion,$data)];
             }
             return null; //QuizQuestion is empty
         }
-        return null;
+        $quizQuestions = QuizQuestion::where(['quiz_id'=>$this->quiz_id])->get();
+        if ($quizQuestions->count() == 0){
+            return null;
+        }
+        $result = [];
+        foreach ($quizQuestions as $quizQuestion){
+            $result[$quizQuestion->id] = $this->validateQuizQuestion($quizQuestion);
+        }
+        return $result;
     }
 }

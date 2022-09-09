@@ -460,6 +460,11 @@ class QuizAttemptTest extends TestCase
 
     /** @test */
     function get_quiz_attempt_result_of_single_question(){
+        $testCases = [
+           [
+               'name' => 'Correct Answer'
+           ]
+        ];
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
         [$question_option_one] = $options;
 
@@ -471,7 +476,7 @@ class QuizAttemptTest extends TestCase
                 'answer' => 'central processing unit'
             ]
         );
-        print_r($quiz_attempt->validate($quiz_question->id));
-        $this->assertTrue(true);
+        print_r(json_encode($quiz_attempt->validate($quiz_question->id)));
+        $this->assertEquals([1=>['score'=>5,'is_correct'=>true]],$quiz_attempt->validate($quiz_question->id));
     }
 }
