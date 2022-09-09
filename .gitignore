@@ -3,3 +3,4 @@ vendor/
 logfile.txt
 .vscode/
 .DS_Store
+.idea/
