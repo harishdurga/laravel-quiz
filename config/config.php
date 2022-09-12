@@ -115,7 +115,8 @@ return [
     */
     'render_answers_responses'    => [
         1  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType1Answers',
-
+        2  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType2Answers',
+        3  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType3Answers',
     ]
 
 ];

@@ -203,4 +203,29 @@ class QuizAttempt extends Model
         }
         return [$correctAnswer,$givenAnswer];
     }
+
+    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion){
+        $actualQuestion = $quizQuestion->question;
+        $userAnswersCollection = $quizQuestion->answers;
+        $questionOptions = $actualQuestion->options;
+        $correctAnswersCollection = $actualQuestion->correct_options();
+        $correctAnswers = $userAnswers = [];
+        foreach ($correctAnswersCollection as $correctAnswer) {
+            $correctAnswers[] = $correctAnswer->option;
+        }
+        foreach ($userAnswersCollection as $userAnswer) {
+            $userAnswers[] = $userAnswer?->question_option?->option;
+        }
+        return [$correctAnswers,$userAnswers];
+    }
+
+    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion){
+        $actualQuestion = $quizQuestion->question;
+        $userAnswersCollection = $quizQuestion->answers;
+        $questionOptions = $actualQuestion->options;
+        $correctAnswersCollection = $actualQuestion->correct_options();
+        $userAnswer = $userAnswersCollection->first()?->answer;
+        $correctAnswer = $correctAnswersCollection->first()?->option;
+        return [$correctAnswer,$userAnswer];
+    }
 }
