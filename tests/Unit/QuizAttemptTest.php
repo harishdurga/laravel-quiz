@@ -462,6 +462,7 @@ class QuizAttemptTest extends TestCase
     /** @test */
     function get_quiz_attempt_result_with_and_without_quiz_question()
     {
+
         $testCases = [
             [
                 'name'                     => 'Question type 1 with no negative marks',
