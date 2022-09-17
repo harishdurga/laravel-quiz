@@ -12,16 +12,16 @@ return [
     */
 
     'table_names' => [
-        'topics' => 'topics',
-        'question_types' => 'question_types',
-        'questions' => 'questions',
-        'topicables' => 'topicables',
-        'question_options' => 'question_options',
-        'quizzes' => 'quizzes',
-        'quiz_questions' => 'quiz_questions',
-        'quiz_attempts' => 'quiz_attempts',
+        'topics'               => 'topics',
+        'question_types'       => 'question_types',
+        'questions'            => 'questions',
+        'topicables'           => 'topicables',
+        'question_options'     => 'question_options',
+        'quizzes'              => 'quizzes',
+        'quiz_questions'       => 'quiz_questions',
+        'quiz_attempts'        => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
-        'quiz_authors' => 'quiz_authors'
+        'quiz_authors'         => 'quiz_authors'
     ],
 
     /*
@@ -103,6 +103,20 @@ return [
         1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_1_question',
         2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_2_question',
         3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::get_score_for_type_3_question',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Question type answer/solution render
+    |--------------------------------------------------------------------------
+    |
+    | Render correct answer and given response for different question types
+    |
+    */
+    'render_answers_responses'    => [
+        1  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType1Answers',
+        2  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType2Answers',
+        3  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType3Answers',
     ]
 
 ];
