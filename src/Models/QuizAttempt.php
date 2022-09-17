@@ -151,7 +151,7 @@ class QuizAttempt extends Model
         if ($score <= 0) {
             $isCorrect = false;
         }
-        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion);
+        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion,$data);
         return [
             'score'          => $score,
             'is_correct'     => $isCorrect,
@@ -188,7 +188,7 @@ class QuizAttempt extends Model
         return $result;
     }
 
-    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion)
+    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion,mixed $data=null)
     {
         /**
          * @var Question $actualQuestion
@@ -207,7 +207,7 @@ class QuizAttempt extends Model
         return [$correctAnswer, $givenAnswer];
     }
 
-    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion)
+    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion, mixed $data=null)
     {
         $actualQuestion = $quizQuestion->question;
         $userAnswersCollection = $quizQuestion->answers;
@@ -223,7 +223,7 @@ class QuizAttempt extends Model
         return [$correctAnswers, $userAnswers];
     }
 
-    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion)
+    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion,mixed $data=null)
     {
         $actualQuestion = $quizQuestion->question;
         $userAnswersCollection = $quizQuestion->answers;
