@@ -56,7 +56,7 @@ class QuizAttempt extends Model
         $score = 0;
         $quiz_questions_collection = $this->quiz->questions()->with('question')->orderBy('id', 'ASC')->get();
         $quiz_attempt_answers = [];
-        foreach ($this->answers as $key => $quiz_attempt_answer) {
+        foreach ($this->answers as $quiz_attempt_answer) {
             $quiz_attempt_answers[$quiz_attempt_answer->quiz_question_id][] = $quiz_attempt_answer;
         }
         foreach ($quiz_questions_collection as $quiz_question) {
@@ -151,7 +151,7 @@ class QuizAttempt extends Model
         if ($score <= 0) {
             $isCorrect = false;
         }
-        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion,$data);
+        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion, $data);
         return [
             'score'          => $score,
             'is_correct'     => $isCorrect,
@@ -188,7 +188,7 @@ class QuizAttempt extends Model
         return $result;
     }
 
-    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion,mixed $data=null)
+    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion, mixed $data = null)
     {
         /**
          * @var Question $actualQuestion
@@ -207,11 +207,10 @@ class QuizAttempt extends Model
         return [$correctAnswer, $givenAnswer];
     }
 
-    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion, mixed $data=null)
+    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion, mixed $data = null)
     {
         $actualQuestion = $quizQuestion->question;
         $userAnswersCollection = $quizQuestion->answers;
-        $questionOptions = $actualQuestion->options;
         $correctAnswersCollection = $actualQuestion->correct_options();
         $correctAnswers = $userAnswers = [];
         foreach ($correctAnswersCollection as $correctAnswer) {
@@ -223,11 +222,10 @@ class QuizAttempt extends Model
         return [$correctAnswers, $userAnswers];
     }
 
-    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion,mixed $data=null)
+    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion, mixed $data = null)
     {
         $actualQuestion = $quizQuestion->question;
         $userAnswersCollection = $quizQuestion->answers;
-        $questionOptions = $actualQuestion->options;
         $correctAnswersCollection = $actualQuestion->correct_options();
         $userAnswer = $userAnswersCollection->first()?->answer;
         $correctAnswer = $correctAnswersCollection->first()?->option;
