@@ -21,7 +21,8 @@ return [
         'quiz_questions'       => 'quiz_questions',
         'quiz_attempts'        => 'quiz_attempts',
         'quiz_attempt_answers' => 'quiz_attempt_answers',
-        'quiz_authors'         => 'quiz_authors'
+        'quiz_authors'         => 'quiz_authors',
+        'ownerships'           => 'ownerships'
     ],
 
     /*
@@ -114,9 +115,9 @@ return [
     |
     */
     'render_answers_responses'    => [
-        1  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType1Answers',
-        2  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType2Answers',
-        3  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType3Answers',
+        1 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType1Answers',
+        2 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType2Answers',
+        3 => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType3Answers',
     ]
 
 ];
