@@ -31,4 +31,8 @@ class Ownership extends Model
         return config('laravel-quiz.table_names.ownerships');
     }
 
+    public function owner(){
+        return $this->morphTo(__FUNCTION__,'owner_type','owner_id');
+    }
+
 }
