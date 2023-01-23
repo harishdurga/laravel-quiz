@@ -2,3 +2,4 @@ vendor/
 .phpunit.result.cache
 logfile.txt
 .vscode/
+.idea/
