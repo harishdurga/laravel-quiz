@@ -35,4 +35,8 @@ class Ownership extends Model
         return $this->morphTo(__FUNCTION__,'owner_type','owner_id');
     }
 
+    public function resource(){
+        return $this->morphTo(__FUNCTION__,'resource_type','resource_id');
+    }
+
 }

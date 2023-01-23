@@ -57,6 +57,8 @@ class OwnershipTest extends TestCase
             ]
         ]);
         $this->assertCount(2,$author->ownerships);
+        print_r($author->questions()->toSql());
+        $this->assertCount(2,$author->questions);
         $this->assertEquals('John Doe',$author->ownerships()->first()->owner->name);
     }
 }
