@@ -294,14 +294,17 @@ public function correct_options(): Collection
 Please refer unit and features tests for more understanding.
 
 ### Validate A Quiz Question
-Instead of getting total score for the quiz attempt, you can use `QuizAttempt` model's `validate()` method. This method will return an array with a QuizQuestion model's 
+
+Instead of getting total score for the quiz attempt, you can use `QuizAttempt` model's `validate()` method. This method will return an array with a QuizQuestion model's
 `id` as the key for the assoc array that will be returned.
 **Example:**
+
 ```injectablephp
 $quizAttempt->validate($quizQuestion->id); //For a particular question
 $quizAttempt->validate(); //For all the questions in the quiz attempt
 $quizAttempt->validate($quizQuestion->id,$data); //$data can any type
 ```
+
 ```php
 [
   1 => [
@@ -318,7 +321,9 @@ $quizAttempt->validate($quizQuestion->id,$data); //$data can any type
   ]
 ]
 ```
+
 To be able to render the user answer and correct answer for different types of question types other than the 3 types supported by the package, a new config option has been added.
+
 ```php
 'render_answers_responses'    => [
         1  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType1Answers',
@@ -326,17 +331,19 @@ To be able to render the user answer and correct answer for different types of q
         3  => '\Harishdurga\LaravelQuiz\Models\QuizAttempt::renderQuestionType3Answers',
     ]
 ```
-By keeping the question type id as the key, you can put the path to your custom function to handle the question type. This custom method will be called from inside the 
+
+By keeping the question type id as the key, you can put the path to your custom function to handle the question type. This custom method will be called from inside the
 `validate()` method by passing the `QuizQuestion` object as the argument for your custom method as defined in the config.
 **Example:**
+
 ```php
-public static function renderQuestionType1Answers(QuizQuestion $quizQuestion, mixed $data=null)
+public static function renderQuestionType1Answers(QuizQuestion $quizQuestion,QuizAttempt $quizAttempt,mixed $data=null)
     {
         /**
          * @var Question $actualQuestion
          */
         $actualQuestion = $quizQuestion->question;
-        $answers = $quizQuestion->answers;
+        $answers = $quizQuestion->answers->where('quiz_attempt_id', $quizAttempt->id);
         $questionOptions = $actualQuestion->options;
         $correctAnswer = $actualQuestion->correct_options()->first()?->option;
         $givenAnswer = $answers->first()?->question_option_id;
@@ -349,6 +356,7 @@ public static function renderQuestionType1Answers(QuizQuestion $quizQuestion, mi
         return [$correctAnswer, $givenAnswer];
     }
 ```
+
 As shown in the example you customer method should return an array with two elements the first one being the correct answer and the second element being the user's answer for the question.
 And whatever the `$data` you send to the `validate()` will be sent to these custom methods so that you can send additional data for rendering the answers.
 
