@@ -571,19 +571,57 @@ class QuizAttemptTest extends TestCase
         $questionsWithOptions = [
             [
                 'question' => 'How many world wonders are there?',
-                'answer' => 7,
+                'options' => [
+                    [1, 7, true],
+                ],
                 'id' => 1,
+                'question_type' => 3,
             ],
             [
                 'question' => 'What is the biggest desert in the world?',
-                'answer' => 'Sahara',
+                'options' => [[2, 'Sahara', true]],
                 'id' => 2,
+                'question_type' => 3,
             ],
             [
                 'question' => 'What is the biggest bird?',
-                'answer' => 'Ostrich',
+                'options' => [[3, 'Ostrich', true]],
                 'id' => 3,
+                'question_type' => 3,
             ],
+            [
+                'question' => 'Which One of these is not a continent?',
+                'options' => [
+                    [4, 'US', true], [5, 'Asia', false], [6, 'Europe', false], [7, 'Australia', false],
+                ],
+                'id' => 4,
+                'question_type' => 1,
+            ],
+            [
+                'question' => 'Which of the following is a non metal that remains liquid at room temperature?',
+                'options' => [
+                    [8, 'Phosphorous', false], [9, 'Bromine', true], [10, 'Chlorine', false], [11, 'Helium', false],
+                ],
+                'id' => 5,
+                'question_type' => 1,
+            ],
+            [
+                'question' => 'Select All The Mammals',
+                'options' => [
+                    [12, 'cats', true], [13, 'Dogs', true], [14, 'apes', true], [15, 'None of the above', false],
+                ],
+                'id' => 6,
+                'question_type' => 2,
+            ],
+            [
+                'question' => 'Select All The Amphibians',
+                'options' => [
+                    [16, 'frogs', true], [17, 'Dogs', false], [18, 'salamanders', true], [19, 'None of the above', false],
+                ],
+                'id' => 7,
+                'question_type' => 2,
+            ],
+
         ];
         $quiz = Quiz::factory()->make()->create([
             'name' => 'Sample Quiz',
@@ -607,16 +645,19 @@ class QuizAttemptTest extends TestCase
         foreach ($questionsWithOptions as $questionsWithOption) {
             Question::factory()->create([
                 'name' => $questionsWithOption['question'],
-                'question_type_id' => 3,
+                'question_type_id' => $questionsWithOption['question_type'],
                 'is_active' => true,
                 'id' => $questionsWithOption['id'],
             ]);
-            QuestionOption::factory()->create([
-                'question_id' => $questionsWithOption['id'],
-                'name' => $questionsWithOption['answer'],
-                'is_correct' => true,
-                'id' => $questionsWithOption['id'],
-            ]);
+            foreach ($questionsWithOption['options'] as $option) {
+                QuestionOption::factory()->create([
+                    'question_id' => $questionsWithOption['id'],
+                    'name' => $option[1],
+                    'is_correct' => $option[2],
+                    'id' => $option[0],
+                ]);
+            }
+
             QuizQuestion::factory()->create([
                 'quiz_id' => $quiz->id,
                 'question_id' => $questionsWithOption['id'],
@@ -625,67 +666,161 @@ class QuizAttemptTest extends TestCase
                 'negative_marks' => 0.5,
                 'id' => $questionsWithOption['id'],
             ]);
-            QuizAttemptAnswer::create(
-                [
-                    'quiz_attempt_id' => $quizAttemptOne->id,
-                    'quiz_question_id' => $questionsWithOption['id'],
-                    'question_option_id' => $questionsWithOption['id'],
-                    'answer' => $questionsWithOption['answer'],
-                ]
-            );
-            if ($questionsWithOption['id'] != 3) { //Skipping the third question being attempted
-                QuizAttemptAnswer::create(
-                    [
-                        'quiz_attempt_id' => $quizAttemptTwo->id,
-                        'quiz_question_id' => $questionsWithOption['id'],
-                        'question_option_id' => $questionsWithOption['id'],
-                        'answer' => $questionsWithOption['answer'] . 's',
-                    ]
-                );
+            foreach ($questionsWithOption['options'] as $option) {
+                if ($option[2]) {
+                    QuizAttemptAnswer::create(
+                        [
+                            'quiz_attempt_id' => $quizAttemptOne->id,
+                            'quiz_question_id' => $questionsWithOption['id'],
+                            'question_option_id' => $option[0],
+                            'answer' => $option[1],
+                        ]
+                    );
+                    if ($questionsWithOption['id'] != 3) { //Skipping the third question being attempted
+                        QuizAttemptAnswer::create(
+                            [
+                                'quiz_attempt_id' => $quizAttemptTwo->id,
+                                'quiz_question_id' => $questionsWithOption['id'],
+                                'question_option_id' => $option[0],
+                                'answer' => $option[1] . 's',
+                            ]
+                        );
+                    }
+
+                }
+
             }
 
         }
 
         $this->assertEquals([
             1 => [
-                'score' => 1,
-                'is_correct' => true,
-                'correct_answer' => '7',
+                'score' => 1.0,
+                "is_correct" => true,
+                'correct_answer' => 7,
                 'user_answer' => 7,
             ],
+
             2 => [
-                'score' => 1,
+                'score' => 1.0,
                 'is_correct' => true,
                 'correct_answer' => 'Sahara',
                 'user_answer' => 'Sahara',
             ],
+
             3 => [
-                'score' => 1,
+                'score' => 1.0,
                 'is_correct' => true,
                 'correct_answer' => 'Ostrich',
                 'user_answer' => 'Ostrich',
             ],
-        ], $quizAttemptOne->validate(), 'Quiz Attempt With Correct Answers');
-        $this->assertEquals([
-            1 => [
-                'score' => 0,
-                'is_correct' => false,
-                'correct_answer' => '7',
-                'user_answer' => '7s',
+
+            4 => [
+
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => 'US',
+                'user_answer' => 'US',
             ],
-            2 => [
-                'score' => 0,
+
+            5 => [
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => 'Bromine',
+                'user_answer' => 'Bromine',
+            ],
+
+            6 => [
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => [
+                    0 => 'cats',
+                    1 => 'Dogs',
+                    2 => 'apes',
+                ],
+
+                'user_answer' => [
+                    0 => 'cats',
+                    1 => 'Dogs',
+                    2 => 'apes',
+                ],
+
+            ],
+
+            7 => [
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => [
+                    0 => 'frogs',
+                    1 => 'salamanders',
+                ],
+
+                'user_answer' => [
+                    0 => 'frogs',
+                    1 => 'salamanders',
+                ],
+            ],
+
+        ], $quizAttemptOne->validate(), 'Quiz Attempt With Correct Answers');
+
+        $this->assertEquals(array(
+            1 => array(
+                'score' => -0,
+                'is_correct' => false,
+                'correct_answer' => 7,
+                'user_answer' => '7s',
+            ),
+            2 => array(
+                'score' => -0,
                 'is_correct' => false,
                 'correct_answer' => 'Sahara',
                 'user_answer' => 'Saharas',
-            ],
-            3 => [
-                'score' => 0,
+            ),
+            3 => array(
+                'score' => -0,
                 'is_correct' => false,
                 'correct_answer' => 'Ostrich',
-                'user_answer' => null,
-            ],
-        ], $quizAttemptTwo->validate(), 'Quiz Attempt With Wrong Answers');
+                'user_answer' => '',
+            ),
+            4 => array(
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => 'US',
+                'user_answer' => 'US',
+            ),
+            5 => array(
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => 'Bromine',
+                'user_answer' => 'Bromine',
+            ),
+            6 => array(
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => array(
+                    0 => 'cats',
+                    1 => 'Dogs',
+                    2 => 'apes',
+                ),
+                'user_answer' => array(
+                    0 => 'cats',
+                    1 => 'Dogs',
+                    2 => 'apes',
+                ),
+            ),
+            7 => array(
+                'score' => 1,
+                'is_correct' => true,
+                'correct_answer' => array(
+                    0 => 'frogs',
+                    1 => 'salamanders',
+                ),
+                'user_answer' => array(
+                    0 => 'frogs',
+                    1 => 'salamanders',
+                ),
+            ),
+        ), $quizAttemptTwo->validate(), 'Quiz Attempt With Wrong Answers');
 
     }
 }
