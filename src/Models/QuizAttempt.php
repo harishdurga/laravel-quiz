@@ -69,7 +69,7 @@ class QuizAttempt extends Model
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_1_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_1_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array | Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
@@ -77,17 +77,20 @@ class QuizAttempt extends Model
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
-                return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                if (is_array($quizQuestionAnswers)) {
+                    return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                }
+                return $quizQuestionAnswers->first()->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
             }
             return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
-        return count($quizQuestionAnswers) ? (float)$quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
+        return count($quizQuestionAnswers) ? (float) $quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_2_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_2_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array | Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
@@ -103,25 +106,29 @@ class QuizAttempt extends Model
             }
             return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
-        return count($quizQuestionAnswers) ? (float)$quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
+        return count($quizQuestionAnswers) ? (float) $quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     /**
      * @param QuizAttemptAnswer[] $quizQuestionAnswers All the answers of the quiz question
      */
-    public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array|Collection $quizQuestionAnswers, $data = null): float
+    public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, array | Collection $quizQuestionAnswers, $data = null): float
     {
         $quiz = $quizAttempt->quiz;
         $question = $quizQuestion->question;
         $correct_answer = ($question->correct_options())->first()->option;
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
         if (!empty($correct_answer)) {
+
             if (count($quizQuestionAnswers)) {
-                return $quizQuestionAnswers[0]->answer == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                if (is_array($quizQuestionAnswers)) {
+                    return $quizQuestionAnswers[0]->answer == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                }
+                return $quizQuestionAnswers->first()->answer == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
             }
             return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
-        return count($quizQuestionAnswers) ? (float)$quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
+        return count($quizQuestionAnswers) ? (float) $quizQuestion->marks : 0; // Incase of no correct answer, if there is any answer then give full marks
     }
 
     public static function get_negative_marks_for_question(Quiz $quiz, QuizQuestion $quizQuestion): float
@@ -129,34 +136,34 @@ class QuizAttempt extends Model
         $negative_marking_settings = $quiz->negative_marking_settings ?? [
             'enable_negative_marks' => true,
             'negative_marking_type' => 'fixed',
-            'negative_mark_value'   => 0,
+            'negative_mark_value' => 0,
         ];
         if (!$negative_marking_settings['enable_negative_marks']) { // If negative marking is disabled
             return 0;
         }
         if (!empty($quizQuestion->negative_marks)) {
             return $negative_marking_settings['negative_marking_type'] == 'fixed' ?
-                ($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) : ($quizQuestion->marks * (($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) / 100));
+            ($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) : ($quizQuestion->marks * (($quizQuestion->negative_marks < 0 ? -$quizQuestion->negative_marks : $quizQuestion->negative_marks) / 100));
         }
         return $negative_marking_settings['negative_marking_type'] == 'fixed' ? ($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) : ($quizQuestion->marks * (($negative_marking_settings['negative_mark_value'] < 0 ? -$negative_marking_settings['negative_mark_value'] : $negative_marking_settings['negative_mark_value']) / 100));
     }
 
-    private function validateQuizQuestion(QuizQuestion $quizQuestion, mixed $data = null): array
+    private function validateQuizQuestion(QuizAttempt $quizAttempt, QuizQuestion $quizQuestion, mixed $data = null): array
     {
         $isCorrect = true;
         $actualQuestion = $quizQuestion->question;
-        $answers = $quizQuestion->answers;
+        $answers = $quizQuestion->answers->where('quiz_attempt_id', $quizAttempt->id);
         $questionType = $actualQuestion->question_type;
         $score = call_user_func_array(config('laravel-quiz.get_score_for_question_type')[$questionType->id], [$this, $quizQuestion, $answers ?? [], $data]);
         if ($score <= 0) {
             $isCorrect = false;
         }
-        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion, $data);
+        list($correctAnswer, $userAnswer) = config('laravel-quiz.render_answers_responses')[$questionType->id]($quizQuestion, $quizAttempt, $data);
         return [
-            'score'          => $score,
-            'is_correct'     => $isCorrect,
+            'score' => $score,
+            'is_correct' => $isCorrect,
             'correct_answer' => $correctAnswer,
-            'user_answer'    => $userAnswer
+            'user_answer' => $userAnswer,
         ];
     }
 
@@ -165,7 +172,7 @@ class QuizAttempt extends Model
      * @param $data mixed|null data to be passed to the user defined function to evaluate different question types
      * @return array|null [1=>['score'=>10,'is_correct'=>true,'correct_answer'=>'a','user_answer'=>'a']]
      */
-    public function validate(int|null $quizQuestionId = null, mixed $data = null): array|null
+    public function validate(int | null $quizQuestionId = null, mixed $data = null): array | null
     {
         if ($quizQuestionId) {
             $quizQuestion = QuizQuestion::where(['quiz_id' => $this->quiz_id, 'id' => $quizQuestionId])
@@ -173,7 +180,7 @@ class QuizAttempt extends Model
                 ->with('answers')
                 ->with('question.options')->first();
             if ($quizQuestion) {
-                return [$quizQuestionId => $this->validateQuizQuestion($quizQuestion, $data)];
+                return [$quizQuestionId => $this->validateQuizQuestion($this, $quizQuestion, $data)];
             }
             return null; //QuizQuestion is empty
         }
@@ -183,18 +190,18 @@ class QuizAttempt extends Model
         }
         $result = [];
         foreach ($quizQuestions as $quizQuestion) {
-            $result[$quizQuestion->id] = $this->validateQuizQuestion($quizQuestion);
+            $result[$quizQuestion->id] = $this->validateQuizQuestion($this, $quizQuestion);
         }
         return $result;
     }
 
-    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion, mixed $data = null)
+    public static function renderQuestionType1Answers(QuizQuestion $quizQuestion, QuizAttempt $quizAttempt, mixed $data = null)
     {
         /**
          * @var Question $actualQuestion
          */
         $actualQuestion = $quizQuestion->question;
-        $answers = $quizQuestion->answers;
+        $answers = $quizQuestion->answers->where('quiz_attempt_id', $quizAttempt->id);
         $questionOptions = $actualQuestion->options;
         $correctAnswer = $actualQuestion->correct_options()->first()?->option;
         $givenAnswer = $answers->first()?->question_option_id;
@@ -207,10 +214,10 @@ class QuizAttempt extends Model
         return [$correctAnswer, $givenAnswer];
     }
 
-    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion, mixed $data = null)
+    public static function renderQuestionType2Answers(QuizQuestion $quizQuestion, QuizAttempt $quizAttempt, mixed $data = null)
     {
         $actualQuestion = $quizQuestion->question;
-        $userAnswersCollection = $quizQuestion->answers;
+        $userAnswersCollection = $quizQuestion->answers->where('quiz_attempt_id', $quizAttempt->id);
         $correctAnswersCollection = $actualQuestion->correct_options();
         $correctAnswers = $userAnswers = [];
         foreach ($correctAnswersCollection as $correctAnswer) {
@@ -222,10 +229,10 @@ class QuizAttempt extends Model
         return [$correctAnswers, $userAnswers];
     }
 
-    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion, mixed $data = null)
+    public static function renderQuestionType3Answers(QuizQuestion $quizQuestion, QuizAttempt $quizAttempt, mixed $data = null)
     {
         $actualQuestion = $quizQuestion->question;
-        $userAnswersCollection = $quizQuestion->answers;
+        $userAnswersCollection = $quizQuestion->answers->where('quiz_attempt_id', $quizAttempt->id);
         $correctAnswersCollection = $actualQuestion->correct_options();
         $userAnswer = $userAnswersCollection->first()?->answer;
         $correctAnswer = $correctAnswersCollection->first()?->option;
