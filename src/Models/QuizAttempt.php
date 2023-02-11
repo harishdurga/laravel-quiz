@@ -77,7 +77,10 @@ class QuizAttempt extends Model
         $negative_marks = self::get_negative_marks_for_question($quiz, $quizQuestion);
         if (!empty($correct_answer)) {
             if (count($quizQuestionAnswers)) {
-                return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                if (is_array($quizQuestionAnswers)) {
+                    return $quizQuestionAnswers[0]->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
+                }
+                return $quizQuestionAnswers->first()->question_option_id == $correct_answer ? $quizQuestion->marks : -($negative_marks); // Return marks in case of correct answer else negative marks
             }
             return $quizQuestion->is_optional ? 0 : -$negative_marks; // If the question is optional, then the negative marks will be 0
         }
