@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Harishdurga\LaravelQuiz\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
