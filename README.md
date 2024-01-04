@@ -60,7 +60,7 @@ $algorithms = Topic::create([
     'name' => 'Algorithms',
     'slug' => 'algorithms'
 ]);
-$computer_science->children()->save($algorithms);
+$algorithms->children()->save($algorithms);
 ```
 
 ### Question Types
