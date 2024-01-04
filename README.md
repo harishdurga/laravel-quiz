@@ -6,12 +6,12 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/harishdurga/laravel-quiz.svg?style=flat-square)](https://packagist.org/packages/harishdurga/laravel-quiz)
 ![GitHub Actions](https://github.com/harishdurga/laravel-quiz/actions/workflows/main.yml/badge.svg)
 
-With this package you can easily get quiz functionality into your Laravel project.
+With this package, you can easily get quiz functionality into your Laravel project.
 
 ## Features
 
 - Add Topics to Questions, Quizzes and to other Topics
-- Supported Question Types: Multiple Choice,Single Choice, and Fill In The Blank
+- Supported Question Types: Multiple Choice, Single Choice, and Fill In The Blank
 - Add your own Question Types and define your own methods to handle them
 - Flexible Negative Marking Settings
 - Flexible Quiz with most of the useful settings (Ex: Total marks, Pass marks, Negative Marking, Duration, Valid between date, Description etc)
@@ -21,7 +21,7 @@ With this package you can easily get quiz functionality into your Laravel projec
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require harishdurga/laravel-quiz
@@ -36,13 +36,13 @@ composer require harishdurga/laravel-quiz
 
 ![LaravelQuiz](https://user-images.githubusercontent.com/10380630/182762726-de5d4b61-af3c-4d0f-b25d-dad986ff5b6e.jpg)
 
-### Publish Vendor Files (config, mingrations,seeder)
+### Publish Vendor Files (config, migrations, seeder)
 
 ```bash
 php artisan vendor:publish --provider="Harishdurga\LaravelQuiz\LaravelQuizServiceProvider"
 ```
 
-If you are updating the package, you may need to run the above command to publish the vendor files. But please take a backup of the config file. Also run the migration command to add new columns to the existing tables.
+If you are updating the package, you may need to run the above command to publish the vendor files. But please take a backup of the config file. Also, run the migration command to add new columns to the existing tables.
 
 ### Create Topic
 
@@ -71,7 +71,7 @@ A seeder class `QuestionTypeSeeder ` will be published into the `database/seeder
 php artisan db:seed --class=\\Harishdurga\\LaravelQuiz\\Database\\Seeders\\QuestionTypeSeeder
 ```
 
-Currently this package is configured to only handle the following type of questions
+Currently, this package is configured to only handle the following types of questions
 
 - `multiple_choice_single_answer`
 - `multiple_choice_multiple_answer`
@@ -83,7 +83,7 @@ Create a QuestionType:
 QuestionType::create(['name'=>'select_all']);
 ```
 
-### User Defined Methods To Evaluate The Answer For Each Question Type
+### User-Defined Methods To Evaluate The Answer For Each Question Type
 
 Though this package provides three question types you can easily change the method that is used to evaluate the answer. You can do this by updating the `get_score_for_question_type` property in config file.
 
@@ -96,7 +96,7 @@ Though this package provides three question types you can easily change the meth
 ]
 ```
 
-But your method has needs to have the following signature
+But your method needs to have the following signature
 
 ```php
 /**
@@ -108,7 +108,7 @@ public static function get_score_for_type_3_question(QuizAttempt $quizAttempt, Q
 }
 ```
 
-If you need to pass any data to your method then you can pass it as the last `$data` parameter. When you call the `caclculate_score()` method of `QuizAttempt` then you can pass the data as the parameter.
+If you need to pass any data to your method then you can pass it as the last `$data` parameter. When you call the `calculate_score()` method of `QuizAttempt` then you can pass the data as the parameter.
 
 ### Create Question
 
@@ -117,8 +117,8 @@ $question_one = Question::create([
     'name' => 'What is an algorithm?',
     'question_type_id' => 1,
     'is_active' => true,
-    'media_url'=>'url',
-    'media_type'=>'image'
+    'media_url' => 'url',
+    'media_type' => 'image'
 ]);
 ```
 
@@ -190,7 +190,7 @@ $quiz->topics()->attach([$topic_one->id, $topic_two->id]);
 
 ### Topicable
 
-Topics can be attached to a quiz or a question. Questions can exist outside of the quiz context. For example you can create a question bank which you can filter based on the topics if attached.
+Topics can be attached to a quiz or a question. Questions can exist outside of the quiz context. For example, you can create a question bank which you can filter based on the topics if attached.
 
 ### Negative Marking Settings
 
@@ -215,7 +215,7 @@ QuizAuthor::create([
 $quiz->quizAuthors->first()->author; //Original User
 ```
 
-Add `CanAuthorQuiz` trait to your model and you can get all the quizzes associated by calling the `quizzes` relation. You can give any author role you want and implement ACL as per your usecase.
+Add `CanAuthorQuiz` trait to your model and you can get all the quizzes associated by calling the `quizzes` relation. You can give any author role you want and implement ACL as per your use case.
 
 ### Add Question To Quiz
 
@@ -291,7 +291,7 @@ public function correct_options(): Collection
 }
 ```
 
-Please refer unit and features tests for more understanding.
+Please refer to unit and features tests for more understanding.
 
 ### Validate A Quiz Question
 
@@ -357,7 +357,7 @@ public static function renderQuestionType1Answers(QuizQuestion $quizQuestion,Qui
     }
 ```
 
-As shown in the example you customer method should return an array with two elements the first one being the correct answer and the second element being the user's answer for the question.
+As shown in the example your customer method should return an array with two elements the first one being the correct answer and the second element being the user's answer for the question.
 And whatever the `$data` you send to the `validate()` will be sent to these custom methods so that you can send additional data for rendering the answers.
 
 ### Testing
@@ -376,7 +376,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ### Security
 
-If you discover any security related issues, please email durgaharish5@gmail.com instead of using the issue tracker.
+If you discover any security-related issues, please email durgaharish5@gmail.com instead of using the issue tracker.
 
 ## Credits
 
