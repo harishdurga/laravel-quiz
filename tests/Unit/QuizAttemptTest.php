@@ -13,6 +13,7 @@ use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 
 class QuizAttemptTest extends TestCase
 {
@@ -129,7 +130,7 @@ class QuizAttemptTest extends TestCase
         return [$user, $question, $options, $quiz, $quizQuestion, $quizAttempt];
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_1_question_no_negative_marks()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
@@ -150,7 +151,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(5, QuizAttempt::get_score_for_type_1_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_1_question_with_negative_marks_question_fixed()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, true, Quiz::FIXED_NEGATIVE_TYPE, 0, 5, 1);
@@ -165,7 +166,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-1, QuizAttempt::get_score_for_type_1_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_1_question_with_negative_marks_question_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 10);
@@ -180,7 +181,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-0.5, QuizAttempt::get_score_for_type_1_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_1_question_with_negative_marks_quiz_fixed()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, true, Quiz::FIXED_NEGATIVE_TYPE, 2, 10, 0);
@@ -196,7 +197,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-2, QuizAttempt::get_score_for_type_1_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_1_question_with_negative_marks_quiz_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(1, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 5, 10, 0);
@@ -211,7 +212,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-0.5, QuizAttempt::get_score_for_type_1_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_2_question_no_negative_marks()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 8, 2);
@@ -234,7 +235,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(8, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one, $quiz_attempt_answer_two]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_2_question_with_negative_marks_question_fixed()
     {
 
@@ -251,7 +252,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-2, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_2_question_with_negative_marks_question_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 8, 2);
@@ -267,7 +268,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-0.16, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_2_question_with_negative_marks_quiz_fixed()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::FIXED_NEGATIVE_TYPE, 1, 5, 0);
@@ -283,7 +284,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-1, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_2_question_with_negative_marks_quiz_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(2, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 10, 5, 0);
@@ -299,7 +300,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-0.5, QuizAttempt::get_score_for_type_2_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_3_question_no_negative_marks()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, false, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 5, 0);
@@ -316,7 +317,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(5, QuizAttempt::get_score_for_type_3_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_3_question_with_negative_marks_question_fixed()
     {
 
@@ -334,7 +335,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-1, QuizAttempt::get_score_for_type_3_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_3_question_with_negative_marks_question_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 0, 10, 10);
@@ -351,7 +352,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-1, QuizAttempt::get_score_for_type_3_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_3_question_with_negative_marks_quiz_fixed()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, true, Quiz::FIXED_NEGATIVE_TYPE, 1, 5, 0);
@@ -368,7 +369,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-1, QuizAttempt::get_score_for_type_3_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_score_for_type_3_question_with_negative_marks_quiz_percentage()
     {
         [$user, $question, $options, $quiz, $quiz_question, $quiz_attempt] = $this->init(3, true, Quiz::PERCENTAGE_NEGATIVE_TYPE, 10, 5, 0);
@@ -385,7 +386,7 @@ class QuizAttemptTest extends TestCase
         $this->assertEquals(-0.5, QuizAttempt::get_score_for_type_3_question($quiz_attempt, $quiz_question, [$quiz_attempt_answer_one]));
     }
 
-    /** @test */
+    #[Test]
     public function get_negative_marks_for_question()
     {
         $testCases = [
@@ -456,7 +457,7 @@ class QuizAttemptTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function get_quiz_attempt_result_with_and_without_quiz_question()
     {
 
@@ -548,7 +549,7 @@ class QuizAttemptTest extends TestCase
         }
     }
 
-    /** @test  */
+    #[Test]
     public function test_quiz_attempt_validate()
     {
 
