@@ -96,8 +96,8 @@ class CreateQuizzesTable extends Migration
             $table->id();
             $table->foreignId('quiz_id')->nullable()->constrained($this->tableNames['quizzes'])->cascadeOnDelete();
             $table->foreignId('question_id')->nullable()->constrained($this->tableNames['questions'])->cascadeOnDelete();
-            $table->unsignedFloat('marks')->default(0); //0 means no marks
-            $table->unsignedFloat('negative_marks')->default(0); //0 means no negative marks in case of wrong answer
+            $table->float('marks')->default(0); //0 means no marks
+            $table->float('negative_marks')->default(0); //0 means no negative marks in case of wrong answer
             $table->boolean('is_optional')->default(false); //0 means not optional, 1 means optional
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();

@@ -9,19 +9,20 @@ use Harishdurga\LaravelQuiz\Models\QuestionType;
 use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Harishdurga\LaravelQuiz\Database\Seeders\QuestionTypeSeeder;
+use PHPUnit\Framework\Attributes\Test;
 
 class QuestionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     function question()
     {
         $question = Question::factory()->create();
         $this->assertEquals(Question::count(), 1);
     }
 
-    /** @test */
+    #[Test]
     function question_question_type_relation()
     {
         $questionType = QuestionType::factory()->create([
@@ -34,7 +35,7 @@ class QuestionTest extends TestCase
         $this->assertEquals($questionType->questions->count(), 2);
     }
 
-    /** @test */
+    #[Test]
     function question_and_topics_relation()
     {
         $topic1 = Topic::factory()->create(['topic' => 'Test Topic One']);
@@ -45,7 +46,7 @@ class QuestionTest extends TestCase
         $this->assertEquals(2, $question->topics->count());
     }
 
-    /** @test */
+    #[Test]
     function question_and_question_options_relation()
     {
         $question = Question::factory()->create();
@@ -60,7 +61,7 @@ class QuestionTest extends TestCase
         $this->assertEquals(2, $question->options->count());
     }
 
-    /** @test */
+    #[Test]
     function testQuestionTypeSeeding()
     {
         $this->seed(QuestionTypeSeeder::class);

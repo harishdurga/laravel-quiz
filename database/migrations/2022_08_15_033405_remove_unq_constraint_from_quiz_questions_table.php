@@ -19,8 +19,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table($this->tableNames['quiz_questions'], function (Blueprint $table) {
-            $sm = Schema::getConnection()->getDoctrineSchemaManager();
-            $indexesFound = $sm->listTableIndexes($this->tableNames['quiz_questions']);
+            // $sm = Schema::getConnection()->getDoctrineSchemaManager();
+            $sm = Schema::getConnection()->getSchemaBuilder();
+            $indexesFound = $sm->getIndexes($this->tableNames['quiz_questions']);
             if (array_key_exists($this->tableNames['quiz_questions'] . "_quiz_id_question_id_unique", $indexesFound)) {
                 $table->dropForeign($this->tableNames['quiz_questions'] . '_question_id_foreign');
                 $table->dropForeign($this->tableNames['quiz_questions'] . '_quiz_id_foreign');

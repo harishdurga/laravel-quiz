@@ -6,12 +6,13 @@ use Harishdurga\LaravelQuiz\Models\Topic;
 use Harishdurga\LaravelQuiz\Tests\TestCase;
 use Harishdurga\LaravelQuiz\Models\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TopicTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     function topic()
     {
         $topic = Topic::factory()->create([
@@ -20,7 +21,7 @@ class TopicTest extends TestCase
         $this->assertEquals('Test Topic', $topic->name);
     }
 
-    /** @test */
+    #[Test]
     function topic_parent_child_relation()
     {
         $parentTopic = Topic::factory()->create([
@@ -33,7 +34,7 @@ class TopicTest extends TestCase
         $this->assertEquals(2, $parentTopic->children()->count());
     }
 
-    /** @test */
+    #[Test]
     function topic_question_relation()
     {
         $topic = Topic::factory()->create([

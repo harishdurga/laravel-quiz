@@ -12,12 +12,13 @@ use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Harishdurga\LaravelQuiz\Models\QuizAttemptAnswer;
+use PHPUnit\Framework\Attributes\Test;
 
 class QuizTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     function quiz()
     {
         $quiz = Quiz::factory()->make()->create([
@@ -28,7 +29,7 @@ class QuizTest extends TestCase
         $this->assertEquals('Sample Quiz', Quiz::find($quiz->id)->name);
     }
 
-    /** @test */
+    #[Test]
     function quiz_topics_relation()
     {
         $quiz = Quiz::factory()->make()->create([
@@ -47,7 +48,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $quiz->topics()->count());
     }
 
-    /** @test */
+    #[Test]
     function quiz_questions_relation()
     {
         $quiz = Quiz::factory()->make()->create([
@@ -67,7 +68,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $quiz->questions()->count());
     }
 
-    /** @test */
+    #[Test]
     function quiz_attempts_relation()
     {
         $user = Author::create(
@@ -111,7 +112,7 @@ class QuizTest extends TestCase
         $this->assertEquals(2, $quiz->attempts()->count());
     }
 
-    /** @test */
+    #[Test]
     function quiz_attempt_answers()
     {
         $user = Author::create(
@@ -173,7 +174,7 @@ class QuizTest extends TestCase
         $this->assertEquals(1, $question_two->options()->first()->answers()->count());
     }
 
-    /** @test */
+    #[Test]
     function quiz_check_negative_marking_settings()
     {
         $quizOne = Quiz::factory()->make()->create([

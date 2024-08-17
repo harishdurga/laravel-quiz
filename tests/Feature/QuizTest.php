@@ -13,6 +13,7 @@ use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Harishdurga\LaravelQuiz\Models\QuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Harishdurga\LaravelQuiz\Models\QuizAttemptAnswer;
+use PHPUnit\Framework\Attributes\Test;
 
 class QuizTest extends TestCase
 {
@@ -1286,7 +1287,7 @@ class QuizTest extends TestCase
         $this->assertEquals(7, $quiz_attempt_one->calculate_score());
     }
 
-    /** @test */
+    #[Test]
     function quiz_multi_user_attempts_multi_question_types_few_wrong_answers()
     {
         $computer_science = Topic::factory()->create([

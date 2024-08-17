@@ -8,12 +8,13 @@ use Harishdurga\LaravelQuiz\Models\QuizAuthor;
 use Harishdurga\LaravelQuiz\Tests\Models\Author;
 use Harishdurga\LaravelQuiz\Tests\Models\Editor;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class QuizAuthorTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     function quiz_authors()
     {
         $admin = Author::create(

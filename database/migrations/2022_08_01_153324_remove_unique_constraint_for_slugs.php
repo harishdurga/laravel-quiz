@@ -19,15 +19,17 @@ return new class extends Migration
     public function up()
     {
         Schema::table($this->tableNames['topics'], function (Blueprint $table) {
-            $sm = Schema::getConnection()->getDoctrineSchemaManager();
-            $indexesFound = $sm->listTableIndexes($this->tableNames['topics']);
+            // $sm = Schema::getConnection()->getDoctrineSchemaManager();
+            $sm = Schema::getConnection()->getSchemaBuilder();
+            $indexesFound = $sm->getIndexes($this->tableNames['topics']);
             if (array_key_exists($this->tableNames['topics'] . "_slug_unique", $indexesFound))
                 $table->dropUnique($this->tableNames['topics'] . "_slug_unique");
         });
 
         Schema::table($this->tableNames['quizzes'], function (Blueprint $table) {
-            $sm = Schema::getConnection()->getDoctrineSchemaManager();
-            $indexesFound = $sm->listTableIndexes($this->tableNames['quizzes']);
+            // $sm = Schema::getConnection()->getDoctrineSchemaManager();
+            $sm = Schema::getConnection()->getSchemaBuilder();
+            $indexesFound = $sm->getIndexes($this->tableNames['quizzes']);
             if (array_key_exists($this->tableNames['quizzes'] . "_slug_unique", $indexesFound))
                 $table->dropUnique($this->tableNames['quizzes'] . "_slug_unique");
         });
