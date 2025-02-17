@@ -2,28 +2,35 @@ name: run-tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
         php: [8.2]
-        laravel: [11.*]
+        laravel: ['11.*', '12.*']
         stability: [prefer-stable]
         include:
           - laravel: 11.*
             testbench: ^9.0
+          - laravel: 12.*
+            testbench: ^10.0
+
     env:
       DB_CONNECTION: testing
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: TestDB@1234
+
     services:
       mysql:
         image: mysql:latest
@@ -52,10 +59,12 @@ jobs:
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
       - name: Execute tests
         run: vendor/bin/phpunit
         env:
